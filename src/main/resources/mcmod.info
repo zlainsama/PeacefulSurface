@@ -1,0 +1,16 @@
+[
+{
+  "modid": "PeacefulSurface",
+  "name": "PeacefulSurface",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/zlainsama/peacefulsurface",
+  "updateUrl": "https://github.com/zlainsama/peacefulsurface/releases",
+  "authors": ["zlainsama"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
