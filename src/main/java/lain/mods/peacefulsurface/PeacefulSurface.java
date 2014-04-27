@@ -1,6 +1,8 @@
 package lain.mods.peacefulsurface;
 
-import net.minecraft.entity.monster.EntitySlime;
+import java.util.regex.Pattern;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -23,8 +25,11 @@ public class PeacefulSurface
     Logger logger;
     Configuration config;
 
+    Pattern mobFilter;
+    Pattern dimensionFilter;
+
     @Mod.Instance("PeacefulSurface")
-    public static PeacefulSurface instance = new PeacefulSurface();
+    public static PeacefulSurface instance;
 
     public static void setDisabled()
     {
@@ -39,14 +44,40 @@ public class PeacefulSurface
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void CheckSpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        if (!(event.entity instanceof IMob))
+        int f = Options.filteringRules;
+        if (f == Flags.DISABLED)
             return;
-        if (event.entity instanceof EntitySlime)
+        if ((f & Flags.LIVING) != 0 && !(event.entity instanceof EntityLivingBase))
             return;
-        if (event.world.provider.dimensionId == -1 || event.world.provider.dimensionId == 1)
+        if ((f & Flags.MOB) != 0 && !(event.entity instanceof IMob))
             return;
-        if (event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > 0)
+        String mobName = EntityList.getEntityString(event.entity);
+        if (mobName == null || mobFilter.matcher(mobName).lookingAt())
+            return;
+        String dimensionName = event.world.provider.getDimensionName();
+        if (dimensionName != null && dimensionFilter.matcher(dimensionName).lookingAt())
+            return;
+        dimensionName = String.format("DIM%d", event.world.provider.dimensionId);
+        if (dimensionFilter.matcher(dimensionName).lookingAt())
+            return;
+        if ((f & Flags.LIGHT_0) != 0 && event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > 0)
             event.setResult(Result.DENY);
+        else if ((f & Flags.RAINING) != 0 && !event.world.isRaining())
+            event.setResult(Result.DENY);
+        else if ((f & Flags.THUNDERING) != 0 && !event.world.isThundering())
+            event.setResult(Result.DENY);
+        else if ((f & Flags.DAY) != 0 && !event.world.isDaytime())
+            event.setResult(Result.DENY);
+        else if ((f & Flags.NIGHT) != 0 && event.world.isDaytime())
+            event.setResult(Result.DENY);
+        // if (!(event.entity instanceof IMob))
+        // return;
+        // if (event.entity instanceof EntitySlime)
+        // return;
+        // if (event.world.provider.dimensionId == -1 || event.world.provider.dimensionId == 1)
+        // return;
+        // if (event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > 0)
+        // event.setResult(Result.DENY);
     }
 
     @Mod.EventHandler
@@ -66,6 +97,9 @@ public class PeacefulSurface
             config.load();
             Options.loadConfig(config, logger);
             config.save();
+
+            mobFilter = Pattern.compile(Options.mobFilter);
+            dimensionFilter = Pattern.compile(Options.dimensionFilter);
         }
         catch (Exception e)
         {

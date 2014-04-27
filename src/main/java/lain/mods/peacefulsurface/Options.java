@@ -8,6 +8,11 @@ import org.apache.logging.log4j.Logger;
 
 public class Options
 {
+
+    public static int filteringRules = Flags.MOB | Flags.LIGHT_0;
+    public static String mobFilter = "(\\bSlime\\b)";
+    public static String dimensionFilter = "(\\bThe End\\b)|(\\bNether\\b)";
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void loadConfig(Configuration config, Logger logger)
     {
