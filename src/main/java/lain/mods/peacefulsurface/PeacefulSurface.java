@@ -60,7 +60,7 @@ public class PeacefulSurface
         dimensionName = String.format("DIM%d", event.world.provider.dimensionId);
         if (dimensionFilter.matcher(dimensionName).lookingAt())
             return;
-        if ((f & Flags.LIGHT_0) != 0 && event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > 0)
+        if ((f & Flags.CHECKING_LIGHTLEVEL) != 0 && event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > Options.LIGHTLEVEL)
             event.setResult(Result.DENY);
         else if ((f & Flags.RAINING) != 0 && !event.world.isRaining())
             event.setResult(Result.DENY);

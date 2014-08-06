@@ -9,9 +9,10 @@ import org.apache.logging.log4j.Logger;
 public class Options
 {
 
-    public static int filteringRules = Flags.MOB | Flags.LIGHT_0;
+    public static int filteringRules = Flags.MOB | Flags.CHECKING_LIGHTLEVEL;
     public static String mobFilter = "(\\bSlime\\b)";
     public static String dimensionFilter = "(\\bThe End\\b)|(\\bNether\\b)";
+    public static int LIGHTLEVEL = 0;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void loadConfig(Configuration config, Logger logger)
