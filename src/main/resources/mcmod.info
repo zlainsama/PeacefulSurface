@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "https://github.com/zlainsama/peacefulsurface",
   "updateUrl": "https://github.com/zlainsama/peacefulsurface/releases",
-  "authors": ["zlainsama"],
+  "authorList": ["zlainsama"],
   "credits": "",
   "logoFile": "",
   "screenshots": [],
