@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -92,6 +93,17 @@ public class PeacefulSurface
         logger = event.getModLog();
         config = new Configuration(event.getSuggestedConfigurationFile());
 
+        reloadConfig();
+    }
+
+    @Mod.EventHandler
+    public void onServerStarting(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new CommandReloadPeace());
+    }
+
+    protected void reloadConfig()
+    {
         try
         {
             config.load();
