@@ -17,17 +17,21 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.x-v5"
+version = "1.8.x-v1"
 group= "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
 minecraft {
-    version = "1.7.2-10.12.1.1061"
-    assetDir = "eclipse/assets"
+    version = "1.8-11.14.0.1280-1.8"
+    runDir = "eclipse"
+    mappings = "snapshot_nodoc_20141130"
 }
 
 processResources
 {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+	
     from(sourceSets.main.resources.srcDirs)
     {
         include 'mcmod.info'
