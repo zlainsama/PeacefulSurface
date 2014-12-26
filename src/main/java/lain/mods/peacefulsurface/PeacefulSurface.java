@@ -4,33 +4,24 @@ import java.util.regex.Pattern;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = "PeacefulSurface", useMetadata = true)
 public class PeacefulSurface
 {
-
-    Logger logger;
-    Configuration config;
-
-    Pattern mobFilter;
-    Pattern dimensionFilter;
-
-    @Mod.Instance("PeacefulSurface")
-    public static PeacefulSurface instance;
 
     public static void setDisabled()
     {
@@ -41,6 +32,16 @@ public class PeacefulSurface
     {
         MinecraftForge.EVENT_BUS.register(instance);
     }
+
+    Logger logger;
+    Configuration config;
+
+    Pattern mobFilter;
+
+    Pattern dimensionFilter;
+
+    @Mod.Instance("PeacefulSurface")
+    public static PeacefulSurface instance;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void CheckSpawn(LivingSpawnEvent.CheckSpawn event)
@@ -58,10 +59,10 @@ public class PeacefulSurface
         String dimensionName = event.world.provider.getDimensionName();
         if (dimensionName != null && dimensionFilter.matcher(dimensionName).lookingAt())
             return;
-        dimensionName = String.format("DIM%d", event.world.provider.dimensionId);
+        dimensionName = String.format("DIM%d", event.world.provider.getDimensionId());
         if (dimensionFilter.matcher(dimensionName).lookingAt())
             return;
-        if ((f & Flags.CHECKING_LIGHTLEVEL) != 0 && event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > Options.LIGHTLEVEL)
+        if ((f & Flags.CHECKING_LIGHTLEVEL) != 0 && event.world.getLight(new BlockPos(MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)), false) > Options.LIGHTLEVEL)
             event.setResult(Result.DENY);
         else if ((f & Flags.RAINING) != 0 && !event.world.isRaining())
             event.setResult(Result.DENY);
