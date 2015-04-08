@@ -1,13 +1,11 @@
 package lain.mods.peacefulsurface;
 
-import java.util.regex.Pattern;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -16,8 +14,11 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+import com.google.common.collect.Lists;
+import com.google.common.io.Resources;
 
 @Mod(modid = "PeacefulSurface", useMetadata = true)
 public class PeacefulSurface
@@ -34,11 +35,10 @@ public class PeacefulSurface
     }
 
     Logger logger;
-    Configuration config;
+    File configFile;
+    File dirRules;
 
-    Pattern mobFilter;
-
-    Pattern dimensionFilter;
+    final List<IEntitySpawnFilter> filters = Lists.newArrayList();
 
     @Mod.Instance("PeacefulSurface")
     public static PeacefulSurface instance;
@@ -46,40 +46,16 @@ public class PeacefulSurface
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void CheckSpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        int f = Options.filteringRules;
-        if (f == Flags.DISABLED)
-            return;
-        if ((f & Flags.LIVING) != 0 && !(event.entity instanceof EntityLivingBase))
-            return;
-        if ((f & Flags.MOB) != 0 && !(event.entity instanceof IMob))
-            return;
-        String mobName = EntityList.getEntityString(event.entity);
-        if (mobName == null || mobFilter.matcher(mobName).lookingAt())
-            return;
-        String dimensionName = event.world.provider.getDimensionName();
-        if (dimensionName != null && dimensionFilter.matcher(dimensionName).lookingAt())
-            return;
-        dimensionName = String.format("DIM%d", event.world.provider.getDimensionId());
-        if (dimensionFilter.matcher(dimensionName).lookingAt())
-            return;
-        if ((f & Flags.CHECKING_LIGHTLEVEL) != 0 && event.world.getLight(new BlockPos(MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)), false) > Options.LIGHTLEVEL)
-            event.setResult(Result.DENY);
-        else if ((f & Flags.RAINING) != 0 && !event.world.isRaining())
-            event.setResult(Result.DENY);
-        else if ((f & Flags.THUNDERING) != 0 && !event.world.isThundering())
-            event.setResult(Result.DENY);
-        else if ((f & Flags.DAY) != 0 && !event.world.isDaytime())
-            event.setResult(Result.DENY);
-        else if ((f & Flags.NIGHT) != 0 && event.world.isDaytime())
-            event.setResult(Result.DENY);
-        // if (!(event.entity instanceof IMob))
-        // return;
-        // if (event.entity instanceof EntitySlime)
-        // return;
-        // if (event.world.provider.dimensionId == -1 || event.world.provider.dimensionId == 1)
-        // return;
-        // if (event.world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(event.x), MathHelper.floor_float(event.y), MathHelper.floor_float(event.z)) > 0)
-        // event.setResult(Result.DENY);
+        for (IEntitySpawnFilter filter : filters)
+        {
+            if (!filter.enabled())
+                continue;
+            if (filter.filterEntity(event.entity, event.world, event.x, event.y, event.z))
+            {
+                event.setResult(Result.DENY);
+                break;
+            }
+        }
     }
 
     @Mod.EventHandler
@@ -92,7 +68,26 @@ public class PeacefulSurface
     public void loadConfig(FMLPreInitializationEvent event)
     {
         logger = event.getModLog();
-        config = new Configuration(event.getSuggestedConfigurationFile());
+        configFile = event.getSuggestedConfigurationFile();
+        dirRules = new File(event.getModConfigurationDirectory(), "PeacefulSurface_Rules");
+        if (!dirRules.exists())
+        {
+            dirRules.mkdirs();
+
+            if (!configFile.exists())
+            {
+                try
+                {
+                    logger.info("Writing DefaultRule.json...");
+                    FileUtils.copyInputStreamToFile(Resources.getResource("/DefaultRule.json").openStream(), new File(dirRules, "DefaultRule.json"));
+                    logger.info("DefaultRule.json is successfully written.");
+                }
+                catch (IOException e)
+                {
+                    logger.catching(Level.ERROR, e);
+                }
+            }
+        }
 
         reloadConfig();
     }
@@ -107,12 +102,24 @@ public class PeacefulSurface
     {
         try
         {
-            config.load();
-            Options.loadConfig(config, logger);
-            config.save();
+            logger.info("Loading filters...");
+            filters.clear();
+            for (File f : dirRules.listFiles(new FileFilter()
+            {
 
-            mobFilter = Pattern.compile(Options.mobFilter);
-            dimensionFilter = Pattern.compile(Options.dimensionFilter);
+                @Override
+                public boolean accept(File pathname)
+                {
+                    if (pathname.getName().toLowerCase().endsWith(".json"))
+                        return true;
+                    return false;
+                }
+
+            }))
+                filters.add(JsonRule.gson.fromJson(Files.newBufferedReader(f.toPath()), JsonRule.class));
+            if (configFile.exists())
+                filters.add(new LegacyConfigRule(configFile));
+            logger.info("Loaded %d filter%s.", filters.size(), filters.size() > 1 ? "s" : "");
         }
         catch (Exception e)
         {
