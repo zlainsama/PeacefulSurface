@@ -18,7 +18,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
 
 @Mod(modid = "PeacefulSurface", useMetadata = true)
 public class PeacefulSurface
@@ -79,7 +78,7 @@ public class PeacefulSurface
                 try
                 {
                     logger.info("Writing DefaultRule.json...");
-                    FileUtils.copyInputStreamToFile(Resources.getResource("/DefaultRule.json").openStream(), new File(dirRules, "DefaultRule.json"));
+                    FileUtils.copyInputStreamToFile(PeacefulSurface.class.getResourceAsStream("/DefaultRule.json"), new File(dirRules, "DefaultRule.json"));
                     logger.info("DefaultRule.json is successfully written.");
                 }
                 catch (IOException e)
