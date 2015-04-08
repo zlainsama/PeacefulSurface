@@ -118,7 +118,7 @@ public class PeacefulSurface
                 filters.add(JsonRule.gson.fromJson(Files.newBufferedReader(f.toPath()), JsonRule.class));
             if (configFile.exists())
                 filters.add(new LegacyConfigRule(configFile));
-            logger.info("Loaded %d filter%s.", filters.size(), filters.size() > 1 ? "s" : "");
+            logger.info(String.format("Loaded %d filter%s.", filters.size(), filters.size() > 1 ? "s" : ""));
         }
         catch (Exception e)
         {
