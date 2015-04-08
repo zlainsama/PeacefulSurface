@@ -6,8 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -67,10 +67,10 @@ public class LegacyConfigRule implements IEntitySpawnFilter
         String dimensionName = world.provider.getDimensionName();
         if (dimensionName != null && _dimensionFilter.matcher(dimensionName).lookingAt())
             return false;
-        dimensionName = String.format("DIM%d", world.provider.getDimensionId());
+        dimensionName = String.format("DIM%d", world.provider.dimensionId);
         if (_dimensionFilter.matcher(dimensionName).lookingAt())
             return false;
-        if ((f & CHECKING_LIGHTLEVEL) != 0 && world.getLight(new BlockPos(MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z)), false) > LIGHTLEVEL)
+        if ((f & CHECKING_LIGHTLEVEL) != 0 && world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z)) > LIGHTLEVEL)
             return true;
         else if ((f & RAINING) != 0 && !world.isRaining())
             return true;

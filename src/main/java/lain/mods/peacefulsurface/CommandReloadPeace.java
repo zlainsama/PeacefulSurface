@@ -1,7 +1,6 @@
 package lain.mods.peacefulsurface;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -14,10 +13,9 @@ public class CommandReloadPeace extends CommandBase
     IChatComponent msgDone = new ChatComponentTranslation("reloadPeace.done", new Object[0]).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW));
 
     @Override
-    public void execute(ICommandSender var1, String[] var2) throws CommandException
+    public String getCommandName()
     {
-        PeacefulSurface.instance.reloadConfig();
-        var1.addChatMessage(msgDone);
+        return "reloadPeace";
     }
 
     @Override
@@ -27,15 +25,16 @@ public class CommandReloadPeace extends CommandBase
     }
 
     @Override
-    public String getName()
-    {
-        return "reloadPeace";
-    }
-
-    @Override
     public int getRequiredPermissionLevel()
     {
         return 3;
+    }
+
+    @Override
+    public void processCommand(ICommandSender var1, String[] var2)
+    {
+        PeacefulSurface.instance.reloadConfig();
+        var1.addChatMessage(msgDone);
     }
 
 }
