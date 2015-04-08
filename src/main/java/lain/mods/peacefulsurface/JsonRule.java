@@ -33,8 +33,8 @@ public class JsonRule implements IEntitySpawnFilter
     public boolean InvertedMobFilter;
     public boolean InvertedDimensionFilter;
     public boolean InvertedLightLevelChecking;
-    public String mobFilter;
-    public String dimensionFilter;
+    public String mobFilter = "";
+    public String dimensionFilter = "";
     public int LightLevel;
 
     private transient Pattern _mobFilter;
@@ -60,14 +60,43 @@ public class JsonRule implements IEntitySpawnFilter
         if (Tameable && !(entity instanceof IEntityOwnable))
             return false;
         String mobName = EntityList.getEntityString(entity);
-        if (mobName == null || _mobFilter.matcher(mobName).lookingAt())
+        if (mobName == null)
             return false;
+        if (InvertedMobFilter)
+        {
+            if (!_mobFilter.matcher(mobName).lookingAt())
+                return false;
+        }
+        else
+        {
+            if (_mobFilter.matcher(mobName).lookingAt())
+                return false;
+        }
         String dimensionName = world.provider.getDimensionName();
-        if (dimensionName != null && _dimensionFilter.matcher(dimensionName).lookingAt())
-            return false;
+        if (dimensionName != null)
+        {
+            if (InvertedDimensionFilter)
+            {
+                if (!_dimensionFilter.matcher(dimensionName).lookingAt())
+                    return false;
+            }
+            else
+            {
+                if (_dimensionFilter.matcher(dimensionName).lookingAt())
+                    return false;
+            }
+        }
         dimensionName = String.format("DIM%d", world.provider.dimensionId);
-        if (_dimensionFilter.matcher(dimensionName).lookingAt())
-            return false;
+        if (InvertedDimensionFilter)
+        {
+            if (!_dimensionFilter.matcher(dimensionName).lookingAt())
+                return false;
+        }
+        else
+        {
+            if (_dimensionFilter.matcher(dimensionName).lookingAt())
+                return false;
+        }
         if (Checking_LightLevel)
         {
             int n = world.getSavedLightValue(EnumSkyBlock.Sky, MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z));
