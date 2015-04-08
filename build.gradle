@@ -22,9 +22,9 @@ group= "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
 minecraft {
-    version = "1.8-11.14.0.1280-1.8"
+    version = "1.8-11.14.1.1334"
     runDir = "eclipse"
-    mappings = "snapshot_nodoc_20141130"
+    mappings = "snapshot_20141130"
 }
 
 processResources
