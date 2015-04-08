@@ -17,14 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.8.x-v2"
+version = "1.7.x-v6"
 group= "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
 minecraft {
-    version = "1.8-11.14.1.1334"
+    version = "1.7.10-10.13.2.1291"
     runDir = "eclipse"
-    mappings = "snapshot_20141130"
 }
 
 processResources
