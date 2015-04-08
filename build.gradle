@@ -31,6 +31,8 @@ processResources
 {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+
+    from 'LICENSE.txt'
 	
     from(sourceSets.main.resources.srcDirs)
     {
