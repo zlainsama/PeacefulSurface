@@ -7,8 +7,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -72,7 +72,7 @@ public class JsonRule implements IEntitySpawnFilter
             if (_mobFilter.matcher(mobName).lookingAt())
                 return false;
         }
-        String dimensionName = world.provider.getDimensionName();
+        String dimensionName = world.provider.getDimensionType().getName();
         if (dimensionName != null)
         {
             if (InvertedDimensionFilter)
@@ -86,7 +86,7 @@ public class JsonRule implements IEntitySpawnFilter
                     return false;
             }
         }
-        dimensionName = String.format("DIM%d", world.provider.getDimensionId());
+        dimensionName = String.format("DIM%d", world.provider.getDimension());
         if (InvertedDimensionFilter)
         {
             if (!_dimensionFilter.matcher(dimensionName).lookingAt())
