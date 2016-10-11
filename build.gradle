@@ -1,30 +1,22 @@
 buildscript {
     repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+apply plugin: 'net.minecraftforge.gradle.forge'
 
-apply plugin: 'forge'
-
-version = "1.8.x-v3a"
+version = "1.10.x-v1-test"
 group= "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
 minecraft {
-    version = "1.8-11.14.1.1334"
-    runDir = "eclipse"
-    mappings = "snapshot_20141130"
+    version = "1.10.2-12.18.2.2099"
+    runDir = "run"
+    mappings = "snapshot_20160518"
 }
 
 processResources
@@ -45,4 +37,9 @@ processResources
     {
         exclude 'mcmod.info'
     }
+}
+
+sourceCompatibility = targetCompatibility = "1.6"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.6"
 }
