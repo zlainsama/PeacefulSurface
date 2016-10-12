@@ -39,7 +39,7 @@ processResources
     }
 }
 
-sourceCompatibility = targetCompatibility = "1.6"
+sourceCompatibility = targetCompatibility = "1.7"
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.7"
 }
