@@ -6,8 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -64,10 +64,10 @@ public class LegacyConfigRule implements IEntitySpawnFilter
         String mobName = EntityList.getEntityString(entity);
         if (mobName == null || _mobFilter.matcher(mobName).lookingAt())
             return false;
-        String dimensionName = world.provider.getDimensionName();
+        String dimensionName = world.provider.getDimensionType().getName();
         if (dimensionName != null && _dimensionFilter.matcher(dimensionName).lookingAt())
             return false;
-        dimensionName = String.format("DIM%d", world.provider.getDimensionId());
+        dimensionName = String.format("DIM%d", world.provider.getDimension());
         if (_dimensionFilter.matcher(dimensionName).lookingAt())
             return false;
         if ((f & CHECKING_LIGHTLEVEL) != 0 && world.getLight(new BlockPos(MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z)), false) > LIGHTLEVEL)

@@ -3,6 +3,7 @@ package lain.mods.peacefulsurface;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
-@Mod(modid = "PeacefulSurface", useMetadata = true, acceptedMinecraftVersions = "[1.8],[1.8.8],[1.8.9]")
+@Mod(modid = "PeacefulSurface", useMetadata = true, acceptedMinecraftVersions = "[1.10],[1.10.2]")
 public class PeacefulSurface
 {
 
@@ -49,7 +50,7 @@ public class PeacefulSurface
         {
             if (!filter.enabled())
                 continue;
-            if (filter.filterEntity(event.entity, event.world, event.x, event.y, event.z))
+            if (filter.filterEntity(event.getEntity(), event.getWorld(), event.getX(), event.getY(), event.getZ()))
             {
                 event.setResult(Result.DENY);
                 break;
@@ -115,7 +116,7 @@ public class PeacefulSurface
                 }
 
             }))
-                filters.add(JsonRule.gson.fromJson(Files.newBufferedReader(f.toPath()), JsonRule.class));
+                filters.add(JsonRule.gson.fromJson(Files.newBufferedReader(f.toPath(), StandardCharsets.UTF_8), JsonRule.class));
             if (configFile.exists())
                 filters.add(new LegacyConfigRule(configFile));
             logger.info(String.format("Loaded %d filter%s.", filters.size(), filters.size() > 1 ? "s" : ""));
