@@ -36,6 +36,7 @@ public class JsonRule implements IEntitySpawnFilter
     public String mobFilter = "";
     public String dimensionFilter = "";
     public int LightLevel;
+    public int MoonPhase;
 
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
@@ -51,6 +52,8 @@ public class JsonRule implements IEntitySpawnFilter
     {
         validate();
 
+        if (MoonPhase != 0 && world.provider.getMoonPhase(world.getWorldInfo().getWorldTime()) != (MoonPhase - 1))
+            return false;
         if (Living && !(entity instanceof EntityLivingBase))
             return false;
         if (Mob && !(entity instanceof IMob))
@@ -131,6 +134,8 @@ public class JsonRule implements IEntitySpawnFilter
     {
         if (valid)
             return;
+        if (MoonPhase < 0 || MoonPhase > 8)
+            MoonPhase = 0;
         _mobFilter = Pattern.compile(mobFilter);
         _dimensionFilter = Pattern.compile(dimensionFilter);
         valid = true;

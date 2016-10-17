@@ -14,5 +14,6 @@
   "InvertedLightLevelChecking": false,
   "mobFilter": "(\bSlime\b)",
   "dimensionFilter": "(\bThe End\b)|(\bNether\b)",
-  "LightLevel": 0
+  "LightLevel": 0,
+  "MoonPhase": 0
 }
