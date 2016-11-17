@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
-@Mod(modid = "PeacefulSurface", useMetadata = true, acceptedMinecraftVersions = "[1.11]")
+@Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.11]")
 public class PeacefulSurface
 {
 
