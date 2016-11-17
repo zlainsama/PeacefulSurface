@@ -1,16 +1,21 @@
-[
 {
-  "modid": "PeacefulSurface",
-  "name": "PeacefulSurface",
-  "description": "make monsters can only spawn in completely darkness (lightlevel <= 0) thus surface will be much more peaceful",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://github.com/zlainsama/peacefulsurface",
-  "updateUrl": "https://github.com/zlainsama/peacefulsurface/releases",
-  "authorList": ["zlainsama"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "peacefulsurface",
+    "name": "PeacefulSurface",
+    "description": "make monsters can only spawn in completely darkness (lightlevel <= 0) thus surface will be much more peaceful",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/zlainsama/peacefulsurface",
+    "updateUrl": "https://github.com/zlainsama/peacefulsurface/releases",
+    "authorList": ["zlainsama"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "parent": "",
+    "requiredMods": ["forge"],
+    "dependencies": [],
+    "dependants": [],
+    "useDependencyInformation": true
+  }]
 }
-]
