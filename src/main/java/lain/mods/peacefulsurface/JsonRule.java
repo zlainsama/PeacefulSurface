@@ -1,6 +1,7 @@
 package lain.mods.peacefulsurface;
 
 import java.util.regex.Pattern;
+import lain.mods.peacefulsurface.integration.Bloodmoon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,6 +38,7 @@ public class JsonRule implements IEntitySpawnFilter
     public String dimensionFilter = "";
     public int LightLevel;
     public int MoonPhase;
+    public boolean DisabledUnderBloodmoon;
 
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
@@ -52,6 +54,8 @@ public class JsonRule implements IEntitySpawnFilter
     {
         validate();
 
+        if (DisabledUnderBloodmoon && Bloodmoon.isBloodmoonActive())
+            return false;
         if (MoonPhase != 0 && world.provider.getMoonPhase(world.getWorldInfo().getWorldTime()) != (MoonPhase - 1))
             return false;
         if (Living && !(entity instanceof EntityLivingBase))

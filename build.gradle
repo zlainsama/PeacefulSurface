@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.11-v1a"
+version = "1.11-v2"
 group= "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
