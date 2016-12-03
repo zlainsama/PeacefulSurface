@@ -58,6 +58,11 @@ public class PeacefulSurface
         }
     }
 
+    public Logger getLogger()
+    {
+        return logger;
+    }
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
