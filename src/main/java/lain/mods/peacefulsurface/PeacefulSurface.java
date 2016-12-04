@@ -40,7 +40,7 @@ public class PeacefulSurface
 
     final List<IEntitySpawnFilter> filters = Lists.newArrayList();
 
-    @Mod.Instance("PeacefulSurface")
+    @Mod.Instance("peacefulsurface")
     public static PeacefulSurface instance;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
