@@ -79,29 +79,18 @@ public class JsonRule implements IEntitySpawnFilter
             if (_mobFilter.matcher(mobName).lookingAt())
                 return false;
         }
-        String dimensionName = world.provider.getDimensionType().getName();
-        if (dimensionName != null)
-        {
-            if (InvertedDimensionFilter)
-            {
-                if (!_dimensionFilter.matcher(dimensionName).lookingAt())
-                    return false;
-            }
-            else
-            {
-                if (_dimensionFilter.matcher(dimensionName).lookingAt())
-                    return false;
-            }
-        }
-        dimensionName = String.format("DIM%d", world.provider.getDimension());
         if (InvertedDimensionFilter)
         {
-            if (!_dimensionFilter.matcher(dimensionName).lookingAt())
+            String dimensionName = world.provider.getDimensionType().getName();
+            String dimensionName2 = String.format("DIM%d", world.provider.getDimension());
+            if (!_dimensionFilter.matcher(dimensionName).lookingAt() && !_dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         else
         {
-            if (_dimensionFilter.matcher(dimensionName).lookingAt())
+            String dimensionName = world.provider.getDimensionType().getName();
+            String dimensionName2 = String.format("DIM%d", world.provider.getDimension());
+            if (_dimensionFilter.matcher(dimensionName).lookingAt() || _dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         if (Checking_LightLevel)

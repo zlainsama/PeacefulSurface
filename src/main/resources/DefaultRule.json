@@ -12,8 +12,8 @@
   "InvertedMobFilter": false,
   "InvertedDimensionFilter": false,
   "InvertedLightLevelChecking": false,
-  "mobFilter": "(\bSlime\b)",
-  "dimensionFilter": "(\bThe End\b)|(\bNether\b)",
+  "mobFilter": "(\\bSlime\\b)",
+  "dimensionFilter": "(\\bThe End\\b)|(\\bNether\\b)",
   "LightLevel": 0,
   "MoonPhase": 0,
   "DisabledUnderBloodmoon": false
