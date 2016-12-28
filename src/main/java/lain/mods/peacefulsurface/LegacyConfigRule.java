@@ -70,7 +70,7 @@ public class LegacyConfigRule implements IEntitySpawnFilter
         dimensionName = String.format("DIM%d", world.provider.getDimension());
         if (_dimensionFilter.matcher(dimensionName).lookingAt())
             return false;
-        if ((f & CHECKING_LIGHTLEVEL) != 0 && world.getLight(new BlockPos(MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z)), false) > LIGHTLEVEL)
+        if ((f & CHECKING_LIGHTLEVEL) != 0 && world.getLight(new BlockPos(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z)), false) > LIGHTLEVEL)
             return true;
         else if ((f & RAINING) != 0 && !world.isRaining())
             return true;

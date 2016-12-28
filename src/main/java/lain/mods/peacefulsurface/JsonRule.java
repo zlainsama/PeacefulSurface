@@ -95,7 +95,7 @@ public class JsonRule implements IEntitySpawnFilter
         }
         if (Checking_LightLevel)
         {
-            int n = world.getLight(new BlockPos(MathHelper.floor_float(x), MathHelper.floor_float(y), MathHelper.floor_float(z)), false);
+            int n = world.getLight(new BlockPos(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z)), false);
             if (InvertedLightLevelChecking)
             {
                 if (n <= LightLevel)

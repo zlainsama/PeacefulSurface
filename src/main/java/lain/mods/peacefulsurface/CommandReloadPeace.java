@@ -18,25 +18,25 @@ public class CommandReloadPeace extends CommandBase
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         PeacefulSurface.instance.reloadConfig();
-        sender.addChatMessage(msgDone);
+        sender.sendMessage(msgDone);
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "reloadPeace";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender var1)
-    {
-        return "reloadPeace.usage";
     }
 
     @Override
     public int getRequiredPermissionLevel()
     {
         return 3;
+    }
+
+    @Override
+    public String getUsage(ICommandSender arg0)
+    {
+        return "reloadPeace.usage";
     }
 
 }
