@@ -1,6 +1,7 @@
 package lain.mods.peacefulsurface;
 
 import java.util.regex.Pattern;
+import lain.mods.peacefulsurface.integration.Bloodmoon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,6 +37,8 @@ public class JsonRule implements IEntitySpawnFilter
     public String mobFilter = "";
     public String dimensionFilter = "";
     public int LightLevel;
+    public int MoonPhase;
+    public boolean DisabledUnderBloodmoon;
 
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
@@ -51,6 +54,10 @@ public class JsonRule implements IEntitySpawnFilter
     {
         validate();
 
+        if (DisabledUnderBloodmoon && Bloodmoon.isBloodmoonActive())
+            return false;
+        if (MoonPhase != 0 && world.provider.getMoonPhase(world.getWorldInfo().getWorldTime()) != (MoonPhase - 1))
+            return false;
         if (Living && !(entity instanceof EntityLivingBase))
             return false;
         if (Mob && !(entity instanceof IMob))
@@ -72,29 +79,18 @@ public class JsonRule implements IEntitySpawnFilter
             if (_mobFilter.matcher(mobName).lookingAt())
                 return false;
         }
-        String dimensionName = world.provider.getDimensionName();
-        if (dimensionName != null)
-        {
-            if (InvertedDimensionFilter)
-            {
-                if (!_dimensionFilter.matcher(dimensionName).lookingAt())
-                    return false;
-            }
-            else
-            {
-                if (_dimensionFilter.matcher(dimensionName).lookingAt())
-                    return false;
-            }
-        }
-        dimensionName = String.format("DIM%d", world.provider.dimensionId);
         if (InvertedDimensionFilter)
         {
-            if (!_dimensionFilter.matcher(dimensionName).lookingAt())
+            String dimensionName = world.provider.getDimensionName();
+            String dimensionName2 = String.format("DIM%d", world.provider.dimensionId);
+            if (!_dimensionFilter.matcher(dimensionName).lookingAt() && !_dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         else
         {
-            if (_dimensionFilter.matcher(dimensionName).lookingAt())
+            String dimensionName = world.provider.getDimensionName();
+            String dimensionName2 = String.format("DIM%d", world.provider.dimensionId);
+            if (_dimensionFilter.matcher(dimensionName).lookingAt() || _dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         if (Checking_LightLevel)
@@ -131,6 +127,8 @@ public class JsonRule implements IEntitySpawnFilter
     {
         if (valid)
             return;
+        if (MoonPhase < 0 || MoonPhase > 8)
+            MoonPhase = 0;
         _mobFilter = Pattern.compile(mobFilter);
         _dimensionFilter = Pattern.compile(dimensionFilter);
         valid = true;
