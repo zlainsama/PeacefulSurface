@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
-@Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.12],[1.12.1]")
 public class PeacefulSurface
 {
 
@@ -46,6 +46,9 @@ public class PeacefulSurface
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void CheckSpawn(LivingSpawnEvent.CheckSpawn event)
     {
+        if (event.isSpawner())
+            return;
+
         for (IEntitySpawnFilter filter : filters)
         {
             if (!filter.enabled())
