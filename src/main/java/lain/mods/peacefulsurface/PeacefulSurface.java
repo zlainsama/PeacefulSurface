@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
-@Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.12],[1.12.1]")
+@Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.12, 1.13)", certificateFingerprint = "aaaf83332a11df02406e9f266b1b65c1306f0f76")
 public class PeacefulSurface
 {
 
