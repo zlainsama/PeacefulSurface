@@ -1,12 +1,14 @@
 package lain.mods.peacefulsurface.integration;
 
-import lain.mods.peacefulsurface.PeacefulSurface;
-import lumien.bloodmoon.server.BloodmoonHandler;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+import lain.mods.peacefulsurface.PeacefulSurface;
+import lumien.bloodmoon.server.BloodmoonHandler;
 
 public class Bloodmoon
 {
+
+    private static boolean failed = false;
 
     public static boolean isBloodmoonActive()
     {
@@ -26,7 +28,5 @@ public class Bloodmoon
             }
         return false;
     }
-
-    private static boolean failed = false;
 
 }

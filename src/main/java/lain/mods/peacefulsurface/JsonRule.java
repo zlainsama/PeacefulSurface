@@ -1,6 +1,8 @@
 package lain.mods.peacefulsurface;
 
 import java.util.regex.Pattern;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lain.mods.peacefulsurface.integration.Bloodmoon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -11,8 +13,6 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class JsonRule implements IEntitySpawnFilter
 {

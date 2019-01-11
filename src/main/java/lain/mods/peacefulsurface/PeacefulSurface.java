@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import com.google.common.collect.Lists;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,14 +19,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
-import com.google.common.collect.Lists;
 
 @Mod(modid = "peacefulsurface", useMetadata = true, acceptedMinecraftVersions = "[1.12, 1.13)", acceptableRemoteVersions = "*", certificateFingerprint = "aaaf83332a11df02406e9f266b1b65c1306f0f76")
 public class PeacefulSurface
 {
+
+    @Mod.Instance("peacefulsurface")
+    public static PeacefulSurface instance;
 
     public static void setDisabled()
     {
@@ -39,9 +42,6 @@ public class PeacefulSurface
     File dirRules;
 
     final List<IEntitySpawnFilter> filters = Lists.newArrayList();
-
-    @Mod.Instance("peacefulsurface")
-    public static PeacefulSurface instance;
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void CheckSpawn(LivingSpawnEvent.CheckSpawn event)
