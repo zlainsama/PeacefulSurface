@@ -1,0 +1,14 @@
+{
+  "id": "peacefulsurface",
+  "name": "peacefulsurface",
+  "version": "v1-fabric",
+  "side": "universal",
+  "description": "make monsters can only spawn in completely darkness (lightlevel <= 0) thus surface will be much more peaceful",
+  "license": "MIT",
+  "initializers": [
+    "lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface"
+  ],
+  "mixins": {
+    "lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurfaceMixin"
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "commands.reloadpeace.usage": "/reloadpeace - 重新加载 [PeacefulSurface] 的规则文件",
+  "commands.reloadpeace.done": "[PeacefulSurface] 规则文件重新加载完毕."
+}
