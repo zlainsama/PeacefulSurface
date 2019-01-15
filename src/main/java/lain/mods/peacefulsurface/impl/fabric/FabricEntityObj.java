@@ -27,33 +27,27 @@ public class FabricEntityObj implements IEntityObj
     }
 
     @Override
-    public Object getObject()
-    {
-        return e.get();
-    }
-
-    @Override
     public boolean isAnimal()
     {
-        return e.get().getEntityClass().isAssignableFrom(AnimalEntity.class);
+        return AnimalEntity.class.isAssignableFrom(e.get().getEntityClass());
     }
 
     @Override
     public boolean isLiving()
     {
-        return e.get().getEntityClass().isAssignableFrom(LivingEntity.class);
+        return LivingEntity.class.isAssignableFrom(e.get().getEntityClass());
     }
 
     @Override
     public boolean isMonster()
     {
-        return e.get().getEntityClass().isAssignableFrom(MobEntity.class);
+        return MobEntity.class.isAssignableFrom(e.get().getEntityClass());
     }
 
     @Override
     public boolean isTameable()
     {
-        return e.get().getEntityClass().isAssignableFrom(TameableEntity.class);
+        return TameableEntity.class.isAssignableFrom(e.get().getEntityClass());
     }
 
 }

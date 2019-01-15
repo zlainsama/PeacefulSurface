@@ -17,11 +17,6 @@ public interface IWorldObj
     int getMoonPhase();
 
     /**
-     * @return actual game object.
-     */
-    Object getObject();
-
-    /**
      * @return the ID of the world.
      */
     int getWorldID();

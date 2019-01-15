@@ -33,12 +33,6 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public Object getObject()
-    {
-        return w.get();
-    }
-
-    @Override
     public int getWorldID()
     {
         return w.get().getDimension().getType().getRawId();

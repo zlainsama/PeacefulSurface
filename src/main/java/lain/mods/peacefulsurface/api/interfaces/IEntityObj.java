@@ -9,11 +9,6 @@ public interface IEntityObj
     String getEntityName();
 
     /**
-     * @return actual game object.
-     */
-    Object getObject();
-
-    /**
      * @return true if the entity is considered Animal.
      */
     boolean isAnimal();
