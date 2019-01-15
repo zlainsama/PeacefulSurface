@@ -9,6 +9,6 @@
     "lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface"
   ],
   "mixins": {
-    "lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurfaceMixin"
+    "common": "PeacefulSurface-mixins.common.json"
   }
 }
