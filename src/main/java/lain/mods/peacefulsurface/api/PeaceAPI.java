@@ -55,7 +55,7 @@ public class PeaceAPI
      */
     public static boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z)
     {
-        return filters.stream().anyMatch(filter -> {
+        return filters.stream().filter(IEntitySpawnFilter::enabled).anyMatch(filter -> {
             return filter.filterEntity(entity, world, x, y, z);
         });
     }
