@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ViewableWorld;
 
 @Mixin(SpawnHelper.class)
-public class FabricPeacefulSurfaceMixin
+public abstract class FabricPeacefulSurfaceMixin
 {
 
     @Inject(method = "canSpawn(Lnet/minecraft/sortme/SpawnRestriction$Location;Lnet/minecraft/world/ViewableWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/EntityType;)Z", at = @At("RETURN"), cancellable = true)

@@ -12,15 +12,23 @@ public class FabricWorldObj implements IWorldObj
 {
 
     private WeakReference<ViewableWorld> w;
+    private int id;
+    private String name;
 
     public FabricWorldObj(ViewableWorld world)
     {
+        if (world == null)
+            throw new IllegalArgumentException("world must not be null");
         w = new WeakReference<ViewableWorld>(world);
+        id = world.getDimension().getType().getRawId();
+        name = Registry.DIMENSION.getId(world.getDimension().getType()).toString();
     }
 
     @Override
     public int getLightLevel(double x, double y, double z)
     {
+        if (w.get() == null) // gc
+            return 0;
         return w.get().getLightLevel(LightType.SKY_LIGHT, new BlockPos(x, y, z));
     }
 
@@ -35,13 +43,13 @@ public class FabricWorldObj implements IWorldObj
     @Override
     public int getWorldID()
     {
-        return w.get().getDimension().getType().getRawId();
+        return id;
     }
 
     @Override
     public String getWorldName()
     {
-        return Registry.DIMENSION.getId(w.get().getDimension().getType()).toString();
+        return name;
     }
 
     @Override

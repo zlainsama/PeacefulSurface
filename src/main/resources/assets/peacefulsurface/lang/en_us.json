@@ -1,4 +1,3 @@
 {
-  "commands.reloadpeace.usage": "/reloadpeace - reloads [PeacefulSurface]'s rules",
   "commands.reloadpeace.done": "[PeacefulSurface] Rules reloaded."
 }

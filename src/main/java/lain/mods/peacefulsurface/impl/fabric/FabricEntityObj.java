@@ -1,6 +1,5 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
-import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -12,42 +11,51 @@ import net.minecraft.util.registry.Registry;
 public class FabricEntityObj implements IEntityObj
 {
 
-    private WeakReference<EntityType<?>> e;
+    private String name;
+    private boolean animal;
+    private boolean living;
+    private boolean monster;
+    private boolean tameable;
 
     public FabricEntityObj(EntityType<?> entity)
     {
-        e = new WeakReference<EntityType<?>>(entity);
+        if (entity == null)
+            throw new IllegalArgumentException("entity must not be null");
+        name = Registry.ENTITY_TYPE.getId(entity).toString();
+        animal = AnimalEntity.class.isAssignableFrom(entity.getEntityClass());
+        living = LivingEntity.class.isAssignableFrom(entity.getEntityClass());
+        monster = MobEntity.class.isAssignableFrom(entity.getEntityClass());
+        tameable = TameableEntity.class.isAssignableFrom(entity.getEntityClass());
     }
 
     @Override
     public String getEntityName()
     {
-
-        return Registry.ENTITY_TYPE.getId(e.get()).toString();
+        return name;
     }
 
     @Override
     public boolean isAnimal()
     {
-        return AnimalEntity.class.isAssignableFrom(e.get().getEntityClass());
+        return animal;
     }
 
     @Override
     public boolean isLiving()
     {
-        return LivingEntity.class.isAssignableFrom(e.get().getEntityClass());
+        return living;
     }
 
     @Override
     public boolean isMonster()
     {
-        return MobEntity.class.isAssignableFrom(e.get().getEntityClass());
+        return monster;
     }
 
     @Override
     public boolean isTameable()
     {
-        return TameableEntity.class.isAssignableFrom(e.get().getEntityClass());
+        return tameable;
     }
 
 }

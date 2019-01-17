@@ -3,10 +3,9 @@ package lain.mods.peacefulsurface.init.fabric;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.WeakHashMap;
 import org.apache.commons.io.FileUtils;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.PeaceAPI;
 import lain.mods.peacefulsurface.impl.JsonRule;
 import lain.mods.peacefulsurface.impl.fabric.FabricEntityObj;
@@ -23,36 +22,21 @@ import net.minecraft.world.ViewableWorld;
 public class FabricPeacefulSurface implements ModInitializer
 {
 
-    private static LoadingCache<ViewableWorld, FabricWorldObj> worlds = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ViewableWorld, FabricWorldObj>()
-    {
-
-        @Override
-        public FabricWorldObj load(ViewableWorld key) throws Exception
-        {
-            return new FabricWorldObj(key);
-        }
-
-    });
-
-    private static LoadingCache<EntityType<?>, FabricEntityObj> entities = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<EntityType<?>, FabricEntityObj>()
-    {
-
-        @Override
-        public FabricEntityObj load(EntityType<?> key) throws Exception
-        {
-            return new FabricEntityObj(key);
-        }
-
-    });
+    private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
+    private static final Map<ViewableWorld, FabricWorldObj> worlds = new WeakHashMap<>();
 
     public static FabricEntityObj wrapEntity(EntityType<?> entity)
     {
-        return entities.getUnchecked(entity);
+        if (!entities.containsKey(entity))
+            entities.put(entity, new FabricEntityObj(entity));
+        return entities.get(entity);
     }
 
     public static FabricWorldObj wrapWorld(ViewableWorld world)
     {
-        return worlds.getUnchecked(world);
+        if (!worlds.containsKey(world))
+            worlds.put(world, new FabricWorldObj(world));
+        return worlds.get(world);
     }
 
     @Override
