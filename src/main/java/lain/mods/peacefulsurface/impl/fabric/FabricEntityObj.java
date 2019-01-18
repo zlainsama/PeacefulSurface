@@ -2,10 +2,10 @@ package lain.mods.peacefulsurface.impl.fabric;
 
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.sortme.Living;
 
 public class FabricEntityObj implements IEntityObj
 {
@@ -22,8 +22,8 @@ public class FabricEntityObj implements IEntityObj
             throw new IllegalArgumentException("entity must not be null");
         name = EntityType.getId(entity).toString();
         animal = AnimalEntity.class.isAssignableFrom(entity.getEntityClass());
-        living = LivingEntity.class.isAssignableFrom(entity.getEntityClass());
-        monster = MobEntity.class.isAssignableFrom(entity.getEntityClass());
+        living = Living.class.isAssignableFrom(entity.getEntityClass());
+        monster = Monster.class.isAssignableFrom(entity.getEntityClass());
         tameable = TameableEntity.class.isAssignableFrom(entity.getEntityClass());
     }
 
