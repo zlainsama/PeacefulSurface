@@ -3,10 +3,10 @@ package lain.mods.peacefulsurface.impl.fabric;
 import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LightType;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 public class FabricWorldObj implements IWorldObj
 {
@@ -21,7 +21,7 @@ public class FabricWorldObj implements IWorldObj
             throw new IllegalArgumentException("world must not be null");
         w = new WeakReference<ViewableWorld>(world);
         id = world.getDimension().getType().getRawId();
-        name = Registry.DIMENSION.getId(world.getDimension().getType()).toString();
+        name = DimensionType.getId(world.getDimension().getType()).toString();
     }
 
     @Override
