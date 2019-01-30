@@ -23,9 +23,4 @@ public interface IEntityObj
      */
     boolean isMonster();
 
-    /**
-     * @return true if the entity is considered Tameable.
-     */
-    boolean isTameable();
-
 }

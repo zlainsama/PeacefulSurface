@@ -54,9 +54,8 @@ public class JsonRule implements IEntitySpawnFilter
 
     public boolean Disabled;
     public boolean Living;
-    public boolean Mob;
+    public boolean Monster;
     public boolean Animal;
-    public boolean Tameable;
     public boolean Checking_LightLevel;
     public boolean Raining;
     public boolean Thundering;
@@ -93,11 +92,9 @@ public class JsonRule implements IEntitySpawnFilter
             return false;
         if (Living && !entity.isLiving())
             return false;
-        if (Mob && !entity.isMonster())
+        if (Monster && !entity.isMonster())
             return false;
         if (Animal && !entity.isAnimal())
-            return false;
-        if (Tameable && !entity.isTameable())
             return false;
         String mobName = entity.getEntityName();
         if (mobName == null)

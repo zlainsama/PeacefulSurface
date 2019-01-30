@@ -1,11 +1,8 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
+import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.sortme.Living;
 
 public class FabricEntityObj implements IEntityObj
 {
@@ -14,17 +11,15 @@ public class FabricEntityObj implements IEntityObj
     private boolean animal;
     private boolean living;
     private boolean monster;
-    private boolean tameable;
 
     public FabricEntityObj(EntityType<?> entity)
     {
         if (entity == null)
             throw new IllegalArgumentException("entity must not be null");
         name = EntityType.getId(entity).toString();
-        animal = AnimalEntity.class.isAssignableFrom(entity.getEntityClass());
-        living = Living.class.isAssignableFrom(entity.getEntityClass());
-        monster = Monster.class.isAssignableFrom(entity.getEntityClass());
-        tameable = TameableEntity.class.isAssignableFrom(entity.getEntityClass());
+        animal = entity.getEntityClass().isAnimal();
+        living = entity.getEntityClass() != EntityCategory.MISC;
+        monster = !entity.getEntityClass().isPeaceful();
     }
 
     @Override
@@ -49,12 +44,6 @@ public class FabricEntityObj implements IEntityObj
     public boolean isMonster()
     {
         return monster;
-    }
-
-    @Override
-    public boolean isTameable()
-    {
-        return tameable;
     }
 
 }
