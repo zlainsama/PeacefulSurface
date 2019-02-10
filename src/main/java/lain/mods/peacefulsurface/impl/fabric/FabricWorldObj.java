@@ -36,7 +36,7 @@ public class FabricWorldObj implements IWorldObj
     public int getMoonPhase()
     {
         if (w.get() instanceof World)
-            return w.get().getDimension().method_12454(((World) w.get()).getTimeOfDay());
+            return w.get().getDimension().getMoonPhase(((World) w.get()).getTimeOfDay());
         return 0;
     }
 

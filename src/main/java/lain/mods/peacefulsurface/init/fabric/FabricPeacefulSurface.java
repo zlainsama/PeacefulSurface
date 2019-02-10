@@ -11,7 +11,7 @@ import lain.mods.peacefulsurface.impl.JsonRule;
 import lain.mods.peacefulsurface.impl.fabric.FabricEntityObj;
 import lain.mods.peacefulsurface.impl.fabric.FabricWorldObj;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.events.ServerEvent;
+import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.command.ServerCommandManager;
 import net.minecraft.text.Style;
@@ -42,7 +42,7 @@ public class FabricPeacefulSurface implements ModInitializer
     @Override
     public void onInitialize()
     {
-        ServerEvent.START.register(server -> {
+        ServerStartCallback.EVENT.register(server -> {
             server.getCommandManager().getDispatcher().register(ServerCommandManager.literal("reloadpeace").requires(source -> {
                 return source.hasPermissionLevel(3);
             }).executes(context -> {
