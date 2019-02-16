@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/zlainsama/PeacefulSurface/issues"
+displayURL="https://github.com/zlainsama/PeacefulSurface"
+#logoFile=""
+credits=""
+authors="zlainsama"
+[[mods]]
+modId="peacefulsurface"
+version="${file.jarVersion}"
+displayName="PeacefulSurface"
+#updateJSONURL=""
+description='''
+make monsters can only spawn in completely darkness (lightlevel <= 0) thus surface will be much more peaceful.
+'''
+[[dependencies.peacefulsurface]]
+modId="forge"
+mandatory=true
+versionRange="[25,)"
+ordering="NONE"
+side="BOTH"

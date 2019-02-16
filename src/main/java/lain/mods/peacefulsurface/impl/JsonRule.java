@@ -1,31 +1,61 @@
-package lain.mods.peacefulsurface;
+package lain.mods.peacefulsurface.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lain.mods.peacefulsurface.integration.Bloodmoon;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityOwnable;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
+import lain.mods.peacefulsurface.api.interfaces.IEntitySpawnFilter;
+import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 
 public class JsonRule implements IEntitySpawnFilter
 {
 
-    public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    private transient boolean valid = false;
+    public static Collection<JsonRule> fromDirectory(File dir) throws IOException
+    {
+        return fromDirectory(dir, ignored -> true);
+    }
+
+    public static Collection<JsonRule> fromDirectory(File dir, Predicate<? super IOException> handler) throws IOException
+    {
+        List<JsonRule> list = new ArrayList<JsonRule>();
+        String newLine = System.getProperty("line.separator");
+        for (File file : dir.listFiles(file -> {
+            return file.getName().toLowerCase().endsWith(".json");
+        }))
+        {
+            try
+            {
+                list.add(fromJson(Files.lines(file.toPath(), StandardCharsets.UTF_8).collect(Collectors.joining(newLine))));
+            }
+            catch (IOException e)
+            {
+                if (!handler.test(e))
+                    throw e;
+            }
+        }
+        return list;
+    }
+
+    public static JsonRule fromJson(String json)
+    {
+        return gson.fromJson(json, JsonRule.class);
+    }
 
     public boolean Disabled;
     public boolean Living;
-    public boolean Mob;
+    public boolean Monster;
     public boolean Animal;
-    public boolean Tameable;
     public boolean Checking_LightLevel;
     public boolean Raining;
     public boolean Thundering;
@@ -40,6 +70,8 @@ public class JsonRule implements IEntitySpawnFilter
     public int MoonPhase;
     public boolean DisabledUnderBloodmoon;
 
+    private transient boolean valid = false;
+
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
 
@@ -50,23 +82,21 @@ public class JsonRule implements IEntitySpawnFilter
     }
 
     @Override
-    public boolean filterEntity(Entity entity, World world, float x, float y, float z)
+    public boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z)
     {
         validate();
 
-        if (DisabledUnderBloodmoon && Bloodmoon.isBloodmoonActive())
+        if (DisabledUnderBloodmoon && world.isBloodMoon())
             return false;
-        if (MoonPhase != 0 && world.provider.getMoonPhase(world.getWorldInfo().getWorldTime()) != (MoonPhase - 1))
+        if (MoonPhase != 0 && world.getMoonPhase() != (MoonPhase - 1))
             return false;
-        if (Living && !(entity instanceof EntityLivingBase))
+        if (Living && !entity.isLiving())
             return false;
-        if (Mob && !(entity instanceof IMob))
+        if (Monster && !entity.isMonster())
             return false;
-        if (Animal && !(entity instanceof IAnimals))
+        if (Animal && !entity.isAnimal())
             return false;
-        if (Tameable && !(entity instanceof IEntityOwnable))
-            return false;
-        String mobName = EntityList.getEntityString(entity);
+        String mobName = entity.getEntityName();
         if (mobName == null)
             return false;
         if (InvertedMobFilter)
@@ -81,21 +111,21 @@ public class JsonRule implements IEntitySpawnFilter
         }
         if (InvertedDimensionFilter)
         {
-            String dimensionName = world.provider.getDimensionType().getName();
-            String dimensionName2 = String.format("DIM%d", world.provider.getDimension());
+            String dimensionName = world.getWorldName();
+            String dimensionName2 = String.format("DIM%d", world.getWorldID());
             if (!_dimensionFilter.matcher(dimensionName).lookingAt() && !_dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         else
         {
-            String dimensionName = world.provider.getDimensionType().getName();
-            String dimensionName2 = String.format("DIM%d", world.provider.getDimension());
+            String dimensionName = world.getWorldName();
+            String dimensionName2 = String.format("DIM%d", world.getWorldID());
             if (_dimensionFilter.matcher(dimensionName).lookingAt() || _dimensionFilter.matcher(dimensionName2).lookingAt())
                 return false;
         }
         if (Checking_LightLevel)
         {
-            int n = world.getLight(new BlockPos(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z)), false);
+            int n = world.getLightLevel(x, y, z);
             if (InvertedLightLevelChecking)
             {
                 if (n <= LightLevel)
@@ -111,9 +141,9 @@ public class JsonRule implements IEntitySpawnFilter
             return true;
         if (Thundering && !world.isThundering())
             return true;
-        if (Day && !world.isDaytime())
+        if (Day && !world.isDayTime())
             return true;
-        if (Night && world.isDaytime())
+        if (Night && world.isDayTime())
             return true;
         return false;
     }

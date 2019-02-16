@@ -1,9 +1,8 @@
 ﻿{
   "Disabled": false,
   "Living": false,
-  "Mob": true,
+  "Monster": true,
   "Animal": false,
-  "Tameable": false,
   "Checking_LightLevel": true,
   "Raining": false,
   "Thundering": false,
@@ -12,8 +11,8 @@
   "InvertedMobFilter": false,
   "InvertedDimensionFilter": false,
   "InvertedLightLevelChecking": false,
-  "mobFilter": "(\\bSlime\\b)",
-  "dimensionFilter": "(\\bThe End\\b)|(\\bNether\\b)",
+  "mobFilter": "(\\bminecraft:slime\\b)|(\\bminecraft:phantom\\b)",
+  "dimensionFilter": "(\\bminecraft:the_end\\b)|(\\bminecraft:the_nether\\b)",
   "LightLevel": 0,
   "MoonPhase": 0,
   "DisabledUnderBloodmoon": false
