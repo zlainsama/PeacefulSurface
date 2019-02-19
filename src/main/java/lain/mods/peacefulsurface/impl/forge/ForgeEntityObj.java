@@ -33,7 +33,7 @@ public class ForgeEntityObj implements IEntityObj
             try
             {
                 ForgeEntityObj obj = new ForgeEntityObj();
-                obj.name = key.getRegistryName().toString();
+                obj.name = EntityType.getId(key).toString();
                 obj.animal = IAnimal.class.isAssignableFrom(key.getEntityClass());
                 obj.living = EntityLivingBase.class.isAssignableFrom(key.getEntityClass());
                 obj.monster = IMob.class.isAssignableFrom(key.getEntityClass());

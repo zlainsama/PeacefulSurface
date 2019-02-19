@@ -7,7 +7,7 @@ import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 public class ForgeWorldObj implements IWorldObj
 {
@@ -33,7 +33,7 @@ public class ForgeWorldObj implements IWorldObj
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
                 obj.id = key.getDimension().getType().getId();
-                obj.name = key.getDimension().getType().getRegistryName().toString();
+                obj.name = DimensionType.func_212678_a(key.getDimension().getType()).toString();
                 return obj;
             }
             catch (Throwable t)
@@ -101,9 +101,7 @@ public class ForgeWorldObj implements IWorldObj
         IWorld o;
         if ((o = w.get()) == null)
             return false;
-        if (o instanceof World)
-            return ((World) o).isDaytime();
-        return false;
+        return o.getWorld().isDaytime();
     }
 
     @Override
@@ -112,9 +110,7 @@ public class ForgeWorldObj implements IWorldObj
         IWorld o;
         if ((o = w.get()) == null)
             return false;
-        if (o instanceof World)
-            return ((World) o).isRaining();
-        return false;
+        return o.getWorld().isRaining();
     }
 
     @Override
@@ -123,9 +119,7 @@ public class ForgeWorldObj implements IWorldObj
         IWorld o;
         if ((o = w.get()) == null)
             return false;
-        if (o instanceof World)
-            return ((World) o).isThundering();
-        return false;
+        return o.getWorld().isThundering();
     }
 
 }
