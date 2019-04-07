@@ -29,7 +29,7 @@ public class FabricWorldObj implements IWorldObj
     {
         if (w.get() == null) // gc
             return 0;
-        return w.get().getLightLevel(LightType.SKY_LIGHT, new BlockPos(x, y, z));
+        return w.get().getLightLevel(LightType.SKY, new BlockPos(x, y, z));
     }
 
     @Override
