@@ -13,7 +13,7 @@ import lain.mods.peacefulsurface.impl.fabric.FabricWorldObj;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.minecraft.entity.EntityType;
-import net.minecraft.server.command.ServerCommandManager;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Style;
 import net.minecraft.text.TextFormat;
 import net.minecraft.text.TranslatableTextComponent;
@@ -43,7 +43,7 @@ public class FabricPeacefulSurface implements ModInitializer
     public void onInitialize()
     {
         ServerStartCallback.EVENT.register(server -> {
-            server.getCommandManager().getDispatcher().register(ServerCommandManager.literal("reloadpeace").requires(source -> {
+            server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
                 return source.hasPermissionLevel(3);
             }).executes(context -> {
                 server.execute(() -> {
