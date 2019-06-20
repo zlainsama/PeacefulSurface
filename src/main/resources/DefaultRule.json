@@ -5,6 +5,7 @@
   "Animal": false,
   "Tameable": false,
   "Checking_LightLevel": true,
+  "Sunny": false,
   "Raining": false,
   "Thundering": false,
   "Day": false,
@@ -16,5 +17,10 @@
   "dimensionFilter": "(\\bthe_end\\b)|(\\bthe_nether\\b)",
   "LightLevel": 0,
   "MoonPhase": 0,
-  "DisabledUnderBloodmoon": false
+  "DisabledUnderBloodmoon": false,
+  "DisabledWhenSunny": false,
+  "DisabledWhenRaining": false,
+  "DisabledWhenThundering": false,
+  "DisabledWhenDay": false,
+  "DisabledWhenNight": false
 }
