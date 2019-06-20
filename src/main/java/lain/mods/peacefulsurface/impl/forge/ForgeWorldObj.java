@@ -33,7 +33,7 @@ public class ForgeWorldObj implements IWorldObj
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
                 obj.id = key.getDimension().getType().getId();
-                obj.name = DimensionType.func_212678_a(key.getDimension().getType()).toString();
+                obj.name = DimensionType.getKey(key.getDimension().getType()).toString();
                 return obj;
             }
             catch (Throwable t)

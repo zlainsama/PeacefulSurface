@@ -5,10 +5,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.IAnimal;
 
 public class ForgeEntityObj implements IEntityObj
 {
@@ -34,9 +32,9 @@ public class ForgeEntityObj implements IEntityObj
             {
                 ForgeEntityObj obj = new ForgeEntityObj();
                 obj.name = EntityType.getId(key).toString();
-                obj.animal = IAnimal.class.isAssignableFrom(key.getEntityClass());
-                obj.living = EntityLivingBase.class.isAssignableFrom(key.getEntityClass());
-                obj.monster = IMob.class.isAssignableFrom(key.getEntityClass());
+                obj.animal = key.getClassiciation().getAnimal();
+                obj.living = key.getClassiciation() != EntityClassification.MISC;
+                obj.monster = !key.getClassiciation().getPeacefulCreature();
                 return obj;
             }
             catch (Throwable t)
