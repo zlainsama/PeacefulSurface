@@ -4,6 +4,7 @@
   "Monster": true,
   "Animal": false,
   "Checking_LightLevel": true,
+  "Sunny": false,
   "Raining": false,
   "Thundering": false,
   "Day": false,
@@ -15,5 +16,10 @@
   "dimensionFilter": "(\\bminecraft:the_end\\b)|(\\bminecraft:the_nether\\b)",
   "LightLevel": 0,
   "MoonPhase": 0,
-  "DisabledUnderBloodmoon": false
+  "DisabledUnderBloodmoon": false,
+  "DisabledWhenSunny": false,
+  "DisabledWhenRaining": false,
+  "DisabledWhenThundering": false,
+  "DisabledWhenDay": false,
+  "DisabledWhenNight": false
 }

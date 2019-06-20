@@ -57,6 +57,7 @@ public class JsonRule implements IEntitySpawnFilter
     public boolean Monster;
     public boolean Animal;
     public boolean Checking_LightLevel;
+    public boolean Sunny;
     public boolean Raining;
     public boolean Thundering;
     public boolean Day;
@@ -69,6 +70,11 @@ public class JsonRule implements IEntitySpawnFilter
     public int LightLevel;
     public int MoonPhase;
     public boolean DisabledUnderBloodmoon;
+    public boolean DisabledWhenSunny;
+    public boolean DisabledWhenRaining;
+    public boolean DisabledWhenThundering;
+    public boolean DisabledWhenDay;
+    public boolean DisabledWhenNight;
 
     private transient boolean valid = false;
 
@@ -87,6 +93,16 @@ public class JsonRule implements IEntitySpawnFilter
         validate();
 
         if (DisabledUnderBloodmoon && world.isBloodMoon())
+            return false;
+        if (DisabledWhenSunny && (!world.isRaining() && !world.isThundering()))
+            return false;
+        if (DisabledWhenRaining && world.isRaining())
+            return false;
+        if (DisabledWhenThundering && world.isThundering())
+            return false;
+        if (DisabledWhenDay && world.isDayTime())
+            return false;
+        if (DisabledWhenNight && !world.isDayTime())
             return false;
         if (MoonPhase != 0 && world.getMoonPhase() != (MoonPhase - 1))
             return false;
@@ -137,6 +153,8 @@ public class JsonRule implements IEntitySpawnFilter
                     return true;
             }
         }
+        if (Sunny && (world.isRaining() || world.isThundering()))
+            return true;
         if (Raining && !world.isRaining())
             return true;
         if (Thundering && !world.isThundering())
