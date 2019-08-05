@@ -31,10 +31,10 @@ public class ForgeEntityObj implements IEntityObj
             try
             {
                 ForgeEntityObj obj = new ForgeEntityObj();
-                obj.name = EntityType.getId(key).toString();
-                obj.animal = key.getClassiciation().getAnimal();
-                obj.living = key.getClassiciation() != EntityClassification.MISC;
-                obj.monster = !key.getClassiciation().getPeacefulCreature();
+                obj.name = EntityType.getKey(key).toString();
+                obj.animal = key.getClassification().getAnimal();
+                obj.living = key.getClassification() != EntityClassification.MISC;
+                obj.monster = !key.getClassification().getPeacefulCreature();
                 return obj;
             }
             catch (Throwable t)
