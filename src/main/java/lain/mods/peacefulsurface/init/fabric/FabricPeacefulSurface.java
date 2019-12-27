@@ -15,15 +15,15 @@ import net.fabricmc.fabric.api.event.server.ServerStartCallback;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Style;
-import net.minecraft.text.TextFormat;
-import net.minecraft.text.TranslatableTextComponent;
-import net.minecraft.world.ViewableWorld;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.WorldView;
 
 public class FabricPeacefulSurface implements ModInitializer
 {
 
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
-    private static final Map<ViewableWorld, FabricWorldObj> worlds = new WeakHashMap<>();
+    private static final Map<WorldView, FabricWorldObj> worlds = new WeakHashMap<>();
 
     public static FabricEntityObj wrapEntity(EntityType<?> entity)
     {
@@ -32,7 +32,7 @@ public class FabricPeacefulSurface implements ModInitializer
         return entities.get(entity);
     }
 
-    public static FabricWorldObj wrapWorld(ViewableWorld world)
+    public static FabricWorldObj wrapWorld(WorldView world)
     {
         if (!worlds.containsKey(world))
             worlds.put(world, new FabricWorldObj(world));
@@ -48,7 +48,7 @@ public class FabricPeacefulSurface implements ModInitializer
             }).executes(context -> {
                 server.execute(() -> {
                     reloadConfig();
-                    context.getSource().sendFeedback(new TranslatableTextComponent("commands.reloadpeace.done", new Object[0]).setStyle(new Style().setColor(TextFormat.YELLOW)), true);
+                    context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(new Style().setColor(Formatting.YELLOW)), true);
                 });
                 return 0;
             }));

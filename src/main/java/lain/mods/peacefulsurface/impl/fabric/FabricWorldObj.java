@@ -4,22 +4,22 @@ import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
-import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.dimension.DimensionType;
 
 public class FabricWorldObj implements IWorldObj
 {
 
-    private WeakReference<ViewableWorld> w;
+    private WeakReference<WorldView> w;
     private int id;
     private String name;
 
-    public FabricWorldObj(ViewableWorld world)
+    public FabricWorldObj(WorldView world)
     {
         if (world == null)
             throw new IllegalArgumentException("world must not be null");
-        w = new WeakReference<ViewableWorld>(world);
+        w = new WeakReference<WorldView>(world);
         id = world.getDimension().getType().getRawId();
         name = DimensionType.getId(world.getDimension().getType()).toString();
     }
@@ -63,7 +63,7 @@ public class FabricWorldObj implements IWorldObj
     public boolean isDayTime()
     {
         if (w.get() instanceof World)
-            return ((World) w.get()).isDaylight();
+            return ((World) w.get()).isDay();
         return false;
     }
 

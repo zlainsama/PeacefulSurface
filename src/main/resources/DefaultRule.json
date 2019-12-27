@@ -4,6 +4,7 @@
   "Monster": true,
   "Animal": false,
   "Checking_LightLevel": true,
+  "Sunny": false,
   "Raining": false,
   "Thundering": false,
   "Day": false,
@@ -11,9 +12,14 @@
   "InvertedMobFilter": false,
   "InvertedDimensionFilter": false,
   "InvertedLightLevelChecking": false,
-  "mobFilter": "(\\bminecraft:slime\\b)|(\\bminecraft:phantom\\b)|(\\bminecraft:pillager\\b)|(\\bminecraft:ravager\\b)",
+  "mobFilter": "(\\bminecraft:slime\\b)|(\\bminecraft:phantom\\b)",
   "dimensionFilter": "(\\bminecraft:the_end\\b)|(\\bminecraft:the_nether\\b)",
   "LightLevel": 0,
   "MoonPhase": 0,
-  "DisabledUnderBloodmoon": false
+  "DisabledUnderBloodmoon": false,
+  "DisabledWhenSunny": false,
+  "DisabledWhenRaining": false,
+  "DisabledWhenThundering": false,
+  "DisabledWhenDay": false,
+  "DisabledWhenNight": false
 }
