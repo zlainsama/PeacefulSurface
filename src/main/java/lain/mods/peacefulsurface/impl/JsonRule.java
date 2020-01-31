@@ -57,6 +57,7 @@ public class JsonRule implements IEntitySpawnFilter
     public boolean Monster;
     public boolean Animal;
     public boolean Checking_LightLevel;
+    public boolean Checking_Altitude;
     public boolean Sunny;
     public boolean Raining;
     public boolean Thundering;
@@ -65,9 +66,11 @@ public class JsonRule implements IEntitySpawnFilter
     public boolean InvertedMobFilter;
     public boolean InvertedDimensionFilter;
     public boolean InvertedLightLevelChecking;
+    public boolean InvertedAltitudeChecking;
     public String mobFilter = "";
     public String dimensionFilter = "";
     public int LightLevel;
+    public int Altitude;
     public int MoonPhase;
     public boolean DisabledUnderBloodmoon;
     public boolean DisabledWhenSunny;
@@ -150,6 +153,19 @@ public class JsonRule implements IEntitySpawnFilter
             else
             {
                 if (n > LightLevel)
+                    return true;
+            }
+        }
+        if (Checking_Altitude)
+        {
+            if (InvertedAltitudeChecking)
+            {
+                if (y <= Altitude)
+                    return true;
+            }
+            else
+            {
+                if (y > Altitude)
                     return true;
             }
         }
