@@ -7,7 +7,6 @@ import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.LightType;
 import net.minecraft.world.dimension.DimensionType;
 
 public class ForgeWorldObj implements IWorldObj
@@ -66,7 +65,7 @@ public class ForgeWorldObj implements IWorldObj
         IWorld o;
         if ((o = w.get()) == null)
             return 0;
-        return o.getLightFor(LightType.SKY, new BlockPos(x, y, z));
+        return o.getWorld().isThundering() ? o.getNeighborAwareLightSubtracted(new BlockPos(x, y, z), 10) : o.getLight(new BlockPos(x, y, z));
     }
 
     @Override
