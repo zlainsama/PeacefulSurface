@@ -3,7 +3,6 @@ package lain.mods.peacefulsurface.impl.fabric;
 import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.dimension.DimensionType;
@@ -27,17 +26,19 @@ public class FabricWorldObj implements IWorldObj
     @Override
     public int getLightLevel(double x, double y, double z)
     {
-        if (w.get() == null) // gc
+        WorldView o;
+        if ((o = w.get()) == null) // gc
             return 0;
-        return w.get().getLightLevel(LightType.SKY, new BlockPos(x, y, z));
+        return ((World) o).isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
     }
 
     @Override
     public int getMoonPhase()
     {
-        if (w.get() instanceof World)
-            return w.get().getDimension().getMoonPhase(((World) w.get()).getTimeOfDay());
-        return 0;
+        WorldView o;
+        if ((o = w.get()) == null) // gc
+            return 0;
+        return o.getDimension().getMoonPhase(((World) o).getTimeOfDay());
     }
 
     @Override
@@ -62,25 +63,28 @@ public class FabricWorldObj implements IWorldObj
     @Override
     public boolean isDayTime()
     {
-        if (w.get() instanceof World)
-            return ((World) w.get()).isDay();
-        return false;
+        WorldView o;
+        if ((o = w.get()) == null) // gc
+            return false;
+        return ((World) o).isDay();
     }
 
     @Override
     public boolean isRaining()
     {
-        if (w.get() instanceof World)
-            return ((World) w.get()).isRaining();
-        return false;
+        WorldView o;
+        if ((o = w.get()) == null) // gc
+            return false;
+        return ((World) o).isRaining();
     }
 
     @Override
     public boolean isThundering()
     {
-        if (w.get() instanceof World)
-            return ((World) w.get()).isThundering();
-        return false;
+        WorldView o;
+        if ((o = w.get()) == null) // gc
+            return false;
+        return ((World) o).isThundering();
     }
 
 }
