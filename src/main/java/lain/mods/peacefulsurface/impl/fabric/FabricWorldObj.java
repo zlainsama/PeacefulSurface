@@ -3,7 +3,7 @@ package lain.mods.peacefulsurface.impl.fabric;
 import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.dimension.DimensionType;
 
@@ -29,7 +29,7 @@ public class FabricWorldObj implements IWorldObj
         WorldView o;
         if ((o = w.get()) == null) // gc
             return 0;
-        return ((World) o).isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
+        return ((IWorld) o).getWorld().isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FabricWorldObj implements IWorldObj
         WorldView o;
         if ((o = w.get()) == null) // gc
             return 0;
-        return o.getDimension().getMoonPhase(((World) o).getTimeOfDay());
+        return o.getDimension().getMoonPhase(((IWorld) o).getWorld().getTimeOfDay());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class FabricWorldObj implements IWorldObj
         WorldView o;
         if ((o = w.get()) == null) // gc
             return false;
-        return ((World) o).isDay();
+        return ((IWorld) o).getWorld().isDay();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class FabricWorldObj implements IWorldObj
         WorldView o;
         if ((o = w.get()) == null) // gc
             return false;
-        return ((World) o).isRaining();
+        return ((IWorld) o).getWorld().isRaining();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class FabricWorldObj implements IWorldObj
         WorldView o;
         if ((o = w.get()) == null) // gc
             return false;
-        return ((World) o).isThundering();
+        return ((IWorld) o).getWorld().isThundering();
     }
 
 }
