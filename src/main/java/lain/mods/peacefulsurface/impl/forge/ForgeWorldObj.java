@@ -7,7 +7,6 @@ import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.dimension.DimensionType;
 
 public class ForgeWorldObj implements IWorldObj
 {
@@ -17,7 +16,6 @@ public class ForgeWorldObj implements IWorldObj
 
         {
             w = new WeakReference<>(null);
-            id = 999;
             name = "[Dummy]";
         }
 
@@ -30,10 +28,10 @@ public class ForgeWorldObj implements IWorldObj
         {
             try
             {
+
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
-                obj.id = key.getDimension().getType().getId();
-                obj.name = DimensionType.getKey(key.getDimension().getType()).toString();
+                obj.name = key.getWorld().func_234923_W_().func_240901_a_().toString();
                 return obj;
             }
             catch (Throwable t)
@@ -52,7 +50,6 @@ public class ForgeWorldObj implements IWorldObj
     }
 
     WeakReference<IWorld> w;
-    int id;
     String name;
 
     private ForgeWorldObj()
@@ -74,13 +71,7 @@ public class ForgeWorldObj implements IWorldObj
         IWorld o;
         if ((o = w.get()) == null)
             return 0;
-        return o.getDimension().getMoonPhase(o.getWorld().getDayTime());
-    }
-
-    @Override
-    public int getWorldID()
-    {
-        return id;
+        return o.func_230315_m_().func_236035_c_(o.getWorldInfo().getDayTime());
     }
 
     @Override

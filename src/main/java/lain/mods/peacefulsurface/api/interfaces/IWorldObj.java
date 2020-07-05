@@ -17,11 +17,6 @@ public interface IWorldObj
     int getMoonPhase();
 
     /**
-     * @return the ID of the world.
-     */
-    int getWorldID();
-
-    /**
      * @return the name of the world.
      */
     String getWorldName();
