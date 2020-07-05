@@ -131,15 +131,13 @@ public class JsonRule implements IEntitySpawnFilter
         if (InvertedDimensionFilter)
         {
             String dimensionName = world.getWorldName();
-            String dimensionName2 = String.format("DIM%d", world.getWorldID());
-            if (!_dimensionFilter.matcher(dimensionName).lookingAt() && !_dimensionFilter.matcher(dimensionName2).lookingAt())
+            if (!_dimensionFilter.matcher(dimensionName).lookingAt())
                 return false;
         }
         else
         {
             String dimensionName = world.getWorldName();
-            String dimensionName2 = String.format("DIM%d", world.getWorldID());
-            if (_dimensionFilter.matcher(dimensionName).lookingAt() || _dimensionFilter.matcher(dimensionName2).lookingAt())
+            if (_dimensionFilter.matcher(dimensionName).lookingAt())
                 return false;
         }
         if (Checking_LightLevel)

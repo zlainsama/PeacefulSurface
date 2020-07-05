@@ -11,19 +11,19 @@ import lain.mods.peacefulsurface.impl.JsonRule;
 import lain.mods.peacefulsurface.impl.fabric.FabricEntityObj;
 import lain.mods.peacefulsurface.impl.fabric.FabricWorldObj;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.server.ServerStartCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.WorldAccess;
 
 public class FabricPeacefulSurface implements ModInitializer
 {
 
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
-    private static final Map<WorldView, FabricWorldObj> worlds = new WeakHashMap<>();
+    private static final Map<WorldAccess, FabricWorldObj> worlds = new WeakHashMap<>();
 
     public static FabricEntityObj wrapEntity(EntityType<?> entity)
     {
@@ -32,7 +32,7 @@ public class FabricPeacefulSurface implements ModInitializer
         return entities.get(entity);
     }
 
-    public static FabricWorldObj wrapWorld(WorldView world)
+    public static FabricWorldObj wrapWorld(WorldAccess world)
     {
         if (!worlds.containsKey(world))
             worlds.put(world, new FabricWorldObj(world));
@@ -42,13 +42,13 @@ public class FabricPeacefulSurface implements ModInitializer
     @Override
     public void onInitialize()
     {
-        ServerStartCallback.EVENT.register(server -> {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
                 return source.hasPermissionLevel(3);
             }).executes(context -> {
                 server.execute(() -> {
                     reloadConfig();
-                    context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(new Style().setColor(Formatting.YELLOW)), true);
+                    context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
                 });
                 return 0;
             }));

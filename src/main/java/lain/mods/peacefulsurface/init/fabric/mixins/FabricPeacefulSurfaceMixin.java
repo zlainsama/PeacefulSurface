@@ -6,20 +6,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import lain.mods.peacefulsurface.api.PeaceAPI;
 import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 @Mixin(SpawnHelper.class)
 public abstract class FabricPeacefulSurfaceMixin
 {
 
-    @Inject(method = "canSpawn(Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/EntityType;)Z", at = @At("RETURN"), cancellable = true)
-    private static void onCanSpawn_nBXjeY(SpawnRestriction.Location location, WorldView world, BlockPos pos, EntityType<?> entitytype, CallbackInfoReturnable<Boolean> info)
+    @Inject(method = "canSpawn(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/biome/Biome$SpawnEntry;Lnet/minecraft/util/math/BlockPos$Mutable;D)Z", at = @At("RETURN"), cancellable = true)
+    private static void onCanSpawn_nBXjeY(ServerWorld world, SpawnGroup group, StructureAccessor structureAccessor, ChunkGenerator chunkGenerator, Biome.SpawnEntry spawnEntry, BlockPos.Mutable pos, double squaredDistance, CallbackInfoReturnable<Boolean> info)
     {
-        if (info.getReturnValue() && PeaceAPI.filterEntity(FabricPeacefulSurface.wrapEntity(entitytype), FabricPeacefulSurface.wrapWorld(world), pos.getX(), pos.getY(), pos.getZ()))
+        if (info.getReturnValue() && PeaceAPI.filterEntity(FabricPeacefulSurface.wrapEntity(spawnEntry.type), FabricPeacefulSurface.wrapWorld(world), pos.getX(), pos.getY(), pos.getZ()))
             info.setReturnValue(false);
     }
 

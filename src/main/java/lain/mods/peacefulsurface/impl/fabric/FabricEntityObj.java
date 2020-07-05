@@ -1,8 +1,8 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
-import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 
 public class FabricEntityObj implements IEntityObj
 {
@@ -17,9 +17,9 @@ public class FabricEntityObj implements IEntityObj
         if (entity == null)
             throw new IllegalArgumentException("entity must not be null");
         name = EntityType.getId(entity).toString();
-        animal = entity.getCategory().isAnimal();
-        living = entity.getCategory() != EntityCategory.MISC;
-        monster = !entity.getCategory().isPeaceful();
+        animal = entity.getSpawnGroup().isAnimal();
+        living = entity.getSpawnGroup() != SpawnGroup.MISC;
+        monster = !entity.getSpawnGroup().isPeaceful();
     }
 
     @Override
