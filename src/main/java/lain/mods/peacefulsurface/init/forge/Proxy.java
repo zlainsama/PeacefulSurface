@@ -36,7 +36,7 @@ enum Proxy
     void handleServerStartingEvent(FMLServerStartingEvent event)
     {
         MinecraftServer server = event.getServer();
-        event.getCommandDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
+        event.getServer().getCommandManager().getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
             server.execute(() -> {
                 reloadRules();
                 context.getSource().sendFeedback(new TranslationTextComponent("commands.reloadpeace.done"), true);
