@@ -15,9 +15,11 @@ import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.LogicalSidedProvider;
 
 enum Proxy
 {
@@ -33,11 +35,10 @@ enum Proxy
         event.setResult(Result.DENY);
     }
 
-    void handleServerStartingEvent(FMLServerStartingEvent event)
+    void handleRegisterCommands(RegisterCommandsEvent event)
     {
-        MinecraftServer server = event.getServer();
-        event.getServer().getCommandManager().getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
-            server.execute(() -> {
+        event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
+            LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
                 context.getSource().sendFeedback(new TranslationTextComponent("commands.reloadpeace.done"), true);
             });
@@ -49,7 +50,7 @@ enum Proxy
     {
         reloadRules();
         MinecraftForge.EVENT_BUS.addListener(this::handleCheckSpawn);
-        MinecraftForge.EVENT_BUS.addListener(this::handleServerStartingEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::handleRegisterCommands);
     }
 
     void reloadRules()

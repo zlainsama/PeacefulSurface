@@ -16,6 +16,6 @@ make monsters can only spawn in completely darkness (lightlevel <= 0) thus surfa
 [[dependencies.peacefulsurface]]
 modId="forge"
 mandatory=true
-versionRange="[29.0.0,)"
+versionRange="[32.0.67,)"
 ordering="NONE"
 side="BOTH"
