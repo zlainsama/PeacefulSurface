@@ -14,6 +14,7 @@ import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.command.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -30,7 +31,7 @@ enum Proxy
 
     void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(event.getWorld()), event.getX(), event.getY(), event.getZ()))
+        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(((IServerWorld) event.getWorld()).getWorld()), event.getX(), event.getY(), event.getZ()))
             return;
         event.setResult(Result.DENY);
     }
