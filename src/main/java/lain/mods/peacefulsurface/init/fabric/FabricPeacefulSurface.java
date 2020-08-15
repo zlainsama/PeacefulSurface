@@ -14,6 +14,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -32,7 +33,7 @@ public class FabricPeacefulSurface implements ModInitializer
         return entities.get(entity);
     }
 
-    public static FabricWorldObj wrapWorld(WorldAccess world)
+    public static FabricWorldObj wrapWorld(ServerWorld world)
     {
         if (!worlds.containsKey(world))
             worlds.put(world, new FabricWorldObj(world));
@@ -42,16 +43,19 @@ public class FabricPeacefulSurface implements ModInitializer
     @Override
     public void onInitialize()
     {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
-                return source.hasPermissionLevel(3);
-            }).executes(context -> {
-                server.execute(() -> {
-                    reloadConfig();
-                    context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
-                });
-                return 0;
-            }));
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, serverResourceManager, success) -> {
+            if (success)
+            {
+                server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
+                    return source.hasPermissionLevel(3);
+                }).executes(context -> {
+                    server.execute(() -> {
+                        reloadConfig();
+                        context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
+                    });
+                    return 0;
+                }));
+            }
         });
 
         reloadConfig();

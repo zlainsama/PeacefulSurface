@@ -2,39 +2,39 @@ package lain.mods.peacefulsurface.impl.fabric;
 
 import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldAccess;
 
 public class FabricWorldObj implements IWorldObj
 {
 
-    private WeakReference<WorldAccess> w;
+    private WeakReference<ServerWorld> w;
     private String name;
 
-    public FabricWorldObj(WorldAccess world)
+    public FabricWorldObj(ServerWorld world)
     {
         if (world == null)
             throw new IllegalArgumentException("world must not be null");
-        w = new WeakReference<WorldAccess>(world);
-        name = world.getWorld().getRegistryKey().getValue().toString();
+        w = new WeakReference<>(world);
+        name = world.getRegistryKey().getValue().toString();
     }
 
     @Override
     public int getLightLevel(double x, double y, double z)
     {
-        WorldAccess o;
+        ServerWorld o;
         if ((o = w.get()) == null) // gc
             return 0;
-        return o.getWorld().isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
+        return o.isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
     }
 
     @Override
     public int getMoonPhase()
     {
-        WorldAccess o;
+        ServerWorld o;
         if ((o = w.get()) == null) // gc
             return 0;
-        return o.getDimension().method_28531(o.getLevelProperties().getTimeOfDay());
+        return o.getDimension().getMoonPhase(o.getLunarTime());
     }
 
     @Override
@@ -53,28 +53,28 @@ public class FabricWorldObj implements IWorldObj
     @Override
     public boolean isDayTime()
     {
-        WorldAccess o;
+        ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;
-        return o.getWorld().isDay();
+        return o.isDay();
     }
 
     @Override
     public boolean isRaining()
     {
-        WorldAccess o;
+        ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;
-        return o.getWorld().isRaining();
+        return o.isRaining();
     }
 
     @Override
     public boolean isThundering()
     {
-        WorldAccess o;
+        ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;
-        return o.getWorld().isThundering();
+        return o.isThundering();
     }
 
 }
