@@ -13,6 +13,7 @@ import lain.mods.peacefulsurface.impl.fabric.FabricWorldObj;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Style;
@@ -43,22 +44,28 @@ public class FabricPeacefulSurface implements ModInitializer
     @Override
     public void onInitialize()
     {
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            registerCommands(server);
+        });
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, serverResourceManager, success) -> {
             if (success)
-            {
-                server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
-                    return source.hasPermissionLevel(3);
-                }).executes(context -> {
-                    server.execute(() -> {
-                        reloadConfig();
-                        context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
-                    });
-                    return 0;
-                }));
-            }
+                registerCommands(server);
         });
 
         reloadConfig();
+    }
+
+    public void registerCommands(MinecraftServer server)
+    {
+        server.getCommandManager().getDispatcher().register(CommandManager.literal("reloadpeace").requires(source -> {
+            return source.hasPermissionLevel(3);
+        }).executes(context -> {
+            server.execute(() -> {
+                reloadConfig();
+                context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
+            });
+            return 0;
+        }));
     }
 
     public void reloadConfig()
