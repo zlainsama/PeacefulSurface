@@ -1,11 +1,5 @@
 package lain.mods.peacefulsurface.init.forge;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.google.common.io.Resources;
 import lain.mods.peacefulsurface.api.PeaceAPI;
 import lain.mods.peacefulsurface.impl.JsonRule;
@@ -21,23 +15,27 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-enum Proxy
-{
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+enum Proxy {
 
     INSTANCE;
 
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
-    void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event)
-    {
+    void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
         if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(((IServerWorld) event.getWorld()).getWorld()), event.getX(), event.getY(), event.getZ()))
             return;
         event.setResult(Result.DENY);
     }
 
-    void handleRegisterCommands(RegisterCommandsEvent event)
-    {
+    void handleRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
             LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
@@ -47,33 +45,25 @@ enum Proxy
         }));
     }
 
-    void init()
-    {
+    void init() {
         reloadRules();
         MinecraftForge.EVENT_BUS.addListener(this::handleCheckSpawn);
         MinecraftForge.EVENT_BUS.addListener(this::handleRegisterCommands);
     }
 
-    void reloadRules()
-    {
-        try
-        {
+    void reloadRules() {
+        try {
             logger.info("[PeacefulSurface] Loading filters...");
             PeaceAPI.clearFilters();
             File dir = Paths.get(".", "config", "PeacefulSurface_Rules").toFile();
 
-            if (!dir.exists())
-            {
-                if (dir.mkdirs())
-                {
-                    try
-                    {
+            if (!dir.exists()) {
+                if (dir.mkdirs()) {
+                    try {
                         logger.info("[PeacefulSurface] Writing DefaultRule...");
                         FileUtils.copyURLToFile(Resources.getResource("/DefaultRule.json"), new File(dir, "DefaultRule.json"));
                         logger.info("[PeacefulSurface] Successfully wrote DefaultRule.");
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         logger.error("[PeacefulSurface] Failed to write DefaultRule.", e);
                     }
                 }
@@ -82,9 +72,7 @@ enum Proxy
             JsonRule.fromDirectory(dir).forEach(PeaceAPI::addFilter);
             PeaceAPI.notifyReloadListeners();
             logger.info("[PeacefulSurface] Loaded {} filter{}.", PeaceAPI.countFilters(), PeaceAPI.countFilters() == 1 ? "" : "s");
-        }
-        catch (Throwable t)
-        {
+        } catch (Throwable t) {
             logger.error("[PeacefulSurface] Failed to load filters.", t);
             PeaceAPI.clearFilters();
         }

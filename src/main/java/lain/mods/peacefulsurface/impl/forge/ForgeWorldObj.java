@@ -1,6 +1,5 @@
 package lain.mods.peacefulsurface.impl.forge;
 
-import java.lang.ref.WeakReference;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -8,11 +7,11 @@ import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
-public class ForgeWorldObj implements IWorldObj
-{
+import java.lang.ref.WeakReference;
 
-    private static final ForgeWorldObj dummy = new ForgeWorldObj()
-    {
+public class ForgeWorldObj implements IWorldObj {
+
+    private static final ForgeWorldObj dummy = new ForgeWorldObj() {
 
         {
             w = new WeakReference<>(null);
@@ -20,45 +19,37 @@ public class ForgeWorldObj implements IWorldObj
         }
 
     };
-    private static final LoadingCache<ServerWorld, ForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerWorld, ForgeWorldObj>()
-    {
+    private static final LoadingCache<ServerWorld, ForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerWorld, ForgeWorldObj>() {
 
         @Override
-        public ForgeWorldObj load(ServerWorld key) throws Exception
-        {
-            try
-            {
+        public ForgeWorldObj load(ServerWorld key) throws Exception {
+            try {
 
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
-                obj.name = key.func_234923_W_().func_240901_a_().toString();
+                obj.name = key.getDimensionKey().getLocation().toString();
                 return obj;
-            }
-            catch (Throwable t)
-            {
+            } catch (Throwable t) {
                 return dummy;
             }
         }
 
     });
 
-    public static ForgeWorldObj get(ServerWorld world)
-    {
+    WeakReference<ServerWorld> w;
+    String name;
+
+    private ForgeWorldObj() {
+    }
+
+    public static ForgeWorldObj get(ServerWorld world) {
         if (world == null)
             return dummy;
         return cache.getUnchecked(world);
     }
 
-    WeakReference<ServerWorld> w;
-    String name;
-
-    private ForgeWorldObj()
-    {
-    }
-
     @Override
-    public int getLightLevel(double x, double y, double z)
-    {
+    public int getLightLevel(double x, double y, double z) {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;
@@ -66,29 +57,25 @@ public class ForgeWorldObj implements IWorldObj
     }
 
     @Override
-    public int getMoonPhase()
-    {
+    public int getMoonPhase() {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;
-        return o.func_230315_m_().func_236035_c_(o.func_241851_ab());
+        return o.getDimensionType().getMoonPhase(o.func_241851_ab());
     }
 
     @Override
-    public String getWorldName()
-    {
+    public String getWorldName() {
         return name;
     }
 
     @Override
-    public boolean isBloodMoon()
-    {
+    public boolean isBloodMoon() {
         return false; // Not implemented
     }
 
     @Override
-    public boolean isDayTime()
-    {
+    public boolean isDayTime() {
         ServerWorld o;
         if ((o = w.get()) == null)
             return false;
@@ -96,8 +83,7 @@ public class ForgeWorldObj implements IWorldObj
     }
 
     @Override
-    public boolean isRaining()
-    {
+    public boolean isRaining() {
         ServerWorld o;
         if ((o = w.get()) == null)
             return false;
@@ -105,8 +91,7 @@ public class ForgeWorldObj implements IWorldObj
     }
 
     @Override
-    public boolean isThundering()
-    {
+    public boolean isThundering() {
         ServerWorld o;
         if ((o = w.get()) == null)
             return false;

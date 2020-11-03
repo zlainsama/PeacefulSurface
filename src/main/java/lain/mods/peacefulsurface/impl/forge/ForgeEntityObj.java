@@ -8,11 +8,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 
-public class ForgeEntityObj implements IEntityObj
-{
+public class ForgeEntityObj implements IEntityObj {
 
-    private static final ForgeEntityObj dummy = new ForgeEntityObj()
-    {
+    private static final ForgeEntityObj dummy = new ForgeEntityObj() {
 
         {
             name = "[Dummy]";
@@ -22,66 +20,55 @@ public class ForgeEntityObj implements IEntityObj
         }
 
     };
-    private static final LoadingCache<EntityType<? extends Entity>, ForgeEntityObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<EntityType<? extends Entity>, ForgeEntityObj>()
-    {
+    private static final LoadingCache<EntityType<? extends Entity>, ForgeEntityObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<EntityType<? extends Entity>, ForgeEntityObj>() {
 
         @Override
-        public ForgeEntityObj load(EntityType<? extends Entity> key) throws Exception
-        {
-            try
-            {
+        public ForgeEntityObj load(EntityType<? extends Entity> key) throws Exception {
+            try {
                 ForgeEntityObj obj = new ForgeEntityObj();
                 obj.name = EntityType.getKey(key).toString();
                 obj.animal = key.getClassification().getAnimal();
                 obj.living = key.getClassification() != EntityClassification.MISC;
                 obj.monster = !key.getClassification().getPeacefulCreature();
                 return obj;
-            }
-            catch (Throwable t)
-            {
+            } catch (Throwable t) {
                 return dummy;
             }
         }
 
     });
 
-    public static ForgeEntityObj get(Entity entity)
-    {
-        if (entity == null)
-            return dummy;
-        return cache.getUnchecked(entity.getType());
-    }
-
     String name;
     boolean animal;
     boolean living;
     boolean monster;
 
-    private ForgeEntityObj()
-    {
+    private ForgeEntityObj() {
+    }
+
+    public static ForgeEntityObj get(Entity entity) {
+        if (entity == null)
+            return dummy;
+        return cache.getUnchecked(entity.getType());
     }
 
     @Override
-    public String getEntityName()
-    {
+    public String getEntityName() {
         return name;
     }
 
     @Override
-    public boolean isAnimal()
-    {
+    public boolean isAnimal() {
         return animal;
     }
 
     @Override
-    public boolean isLiving()
-    {
+    public boolean isLiving() {
         return living;
     }
 
     @Override
-    public boolean isMonster()
-    {
+    public boolean isMonster() {
         return monster;
     }
 

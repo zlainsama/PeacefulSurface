@@ -5,16 +5,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod("peacefulsurface")
-public class ForgePeacefulSurface
-{
+public class ForgePeacefulSurface {
 
-    public ForgePeacefulSurface()
-    {
+    public ForgePeacefulSurface() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     }
 
-    private void setup(FMLCommonSetupEvent event)
-    {
+    private void setup(FMLCommonSetupEvent event) {
         Proxy.INSTANCE.init();
     }
 
