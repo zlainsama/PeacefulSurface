@@ -1,7 +1,6 @@
 package lain.mods.peacefulsurface.api.interfaces;
 
-public interface IWorldObj
-{
+public interface IWorldObj {
 
     /**
      * @param x the x coordinates to query about LightLevel.

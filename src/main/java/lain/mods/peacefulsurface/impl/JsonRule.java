@@ -1,5 +1,11 @@
 package lain.mods.peacefulsurface.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
+import lain.mods.peacefulsurface.api.interfaces.IEntitySpawnFilter;
+import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,47 +16,10 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
-import lain.mods.peacefulsurface.api.interfaces.IEntitySpawnFilter;
-import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 
-public class JsonRule implements IEntitySpawnFilter
-{
+public class JsonRule implements IEntitySpawnFilter {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    public static Collection<JsonRule> fromDirectory(File dir) throws IOException
-    {
-        return fromDirectory(dir, ignored -> true);
-    }
-
-    public static Collection<JsonRule> fromDirectory(File dir, Predicate<? super IOException> handler) throws IOException
-    {
-        List<JsonRule> list = new ArrayList<JsonRule>();
-        String newLine = System.getProperty("line.separator");
-        for (File file : dir.listFiles(file -> {
-            return file.getName().toLowerCase().endsWith(".json");
-        }))
-        {
-            try
-            {
-                list.add(fromJson(Files.lines(file.toPath(), StandardCharsets.UTF_8).collect(Collectors.joining(newLine))));
-            }
-            catch (IOException e)
-            {
-                if (!handler.test(e))
-                    throw e;
-            }
-        }
-        return list;
-    }
-
-    public static JsonRule fromJson(String json)
-    {
-        return gson.fromJson(json, JsonRule.class);
-    }
 
     public boolean Disabled;
     public boolean Living;
@@ -80,19 +49,40 @@ public class JsonRule implements IEntitySpawnFilter
     public boolean DisabledWhenNight;
 
     private transient boolean valid = false;
-
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
 
+    public static Collection<JsonRule> fromDirectory(File dir) throws IOException {
+        return fromDirectory(dir, ignored -> true);
+    }
+
+    public static Collection<JsonRule> fromDirectory(File dir, Predicate<? super IOException> handler) throws IOException {
+        List<JsonRule> list = new ArrayList<JsonRule>();
+        String newLine = System.getProperty("line.separator");
+        for (File file : dir.listFiles(file -> {
+            return file.getName().toLowerCase().endsWith(".json");
+        })) {
+            try {
+                list.add(fromJson(Files.lines(file.toPath(), StandardCharsets.UTF_8).collect(Collectors.joining(newLine))));
+            } catch (IOException e) {
+                if (!handler.test(e))
+                    throw e;
+            }
+        }
+        return list;
+    }
+
+    public static JsonRule fromJson(String json) {
+        return gson.fromJson(json, JsonRule.class);
+    }
+
     @Override
-    public boolean enabled()
-    {
+    public boolean enabled() {
         return !Disabled;
     }
 
     @Override
-    public boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z)
-    {
+    public boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z) {
         validate();
 
         if (DisabledUnderBloodmoon && world.isBloodMoon())
@@ -118,51 +108,37 @@ public class JsonRule implements IEntitySpawnFilter
         String mobName = entity.getEntityName();
         if (mobName == null)
             return false;
-        if (InvertedMobFilter)
-        {
+        if (InvertedMobFilter) {
             if (!_mobFilter.matcher(mobName).lookingAt())
                 return false;
-        }
-        else
-        {
+        } else {
             if (_mobFilter.matcher(mobName).lookingAt())
                 return false;
         }
-        if (InvertedDimensionFilter)
-        {
+        if (InvertedDimensionFilter) {
             String dimensionName = world.getWorldName();
             if (!_dimensionFilter.matcher(dimensionName).lookingAt())
                 return false;
-        }
-        else
-        {
+        } else {
             String dimensionName = world.getWorldName();
             if (_dimensionFilter.matcher(dimensionName).lookingAt())
                 return false;
         }
-        if (Checking_LightLevel)
-        {
+        if (Checking_LightLevel) {
             int n = world.getLightLevel(x, y, z);
-            if (InvertedLightLevelChecking)
-            {
+            if (InvertedLightLevelChecking) {
                 if (n <= LightLevel)
                     return true;
-            }
-            else
-            {
+            } else {
                 if (n > LightLevel)
                     return true;
             }
         }
-        if (Checking_Altitude)
-        {
-            if (InvertedAltitudeChecking)
-            {
+        if (Checking_Altitude) {
+            if (InvertedAltitudeChecking) {
                 if (y <= Altitude)
                     return true;
-            }
-            else
-            {
+            } else {
                 if (y > Altitude)
                     return true;
             }
@@ -180,13 +156,11 @@ public class JsonRule implements IEntitySpawnFilter
         return false;
     }
 
-    public void invalidate()
-    {
+    public void invalidate() {
         valid = false;
     }
 
-    public void validate()
-    {
+    public void validate() {
         if (valid)
             return;
         if (MoonPhase < 0 || MoonPhase > 8)

@@ -1,7 +1,6 @@
 package lain.mods.peacefulsurface.api.interfaces;
 
-public interface IEntitySpawnFilter
-{
+public interface IEntitySpawnFilter {
 
     /**
      * @return if false, this filter will be skipped.

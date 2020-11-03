@@ -1,18 +1,17 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
-import java.lang.ref.WeakReference;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class FabricWorldObj implements IWorldObj
-{
+import java.lang.ref.WeakReference;
+
+public class FabricWorldObj implements IWorldObj {
 
     private WeakReference<ServerWorld> w;
     private String name;
 
-    public FabricWorldObj(ServerWorld world)
-    {
+    public FabricWorldObj(ServerWorld world) {
         if (world == null)
             throw new IllegalArgumentException("world must not be null");
         w = new WeakReference<>(world);
@@ -20,8 +19,7 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public int getLightLevel(double x, double y, double z)
-    {
+    public int getLightLevel(double x, double y, double z) {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return 0;
@@ -29,8 +27,7 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public int getMoonPhase()
-    {
+    public int getMoonPhase() {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return 0;
@@ -38,21 +35,18 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public String getWorldName()
-    {
+    public String getWorldName() {
         return name;
     }
 
     @Override
-    public boolean isBloodMoon()
-    {
+    public boolean isBloodMoon() {
         // not implemented
         return false;
     }
 
     @Override
-    public boolean isDayTime()
-    {
+    public boolean isDayTime() {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;
@@ -60,8 +54,7 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public boolean isRaining()
-    {
+    public boolean isRaining() {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;
@@ -69,8 +62,7 @@ public class FabricWorldObj implements IWorldObj
     }
 
     @Override
-    public boolean isThundering()
-    {
+    public boolean isThundering() {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return false;

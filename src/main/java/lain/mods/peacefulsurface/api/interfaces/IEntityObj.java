@@ -1,7 +1,6 @@
 package lain.mods.peacefulsurface.api.interfaces;
 
-public interface IEntityObj
-{
+public interface IEntityObj {
 
     /**
      * @return the name of the Entity in the Game Registry.
