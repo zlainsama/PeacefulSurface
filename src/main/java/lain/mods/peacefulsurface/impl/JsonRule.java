@@ -151,9 +151,7 @@ public class JsonRule implements IEntitySpawnFilter {
             return true;
         if (Day && !world.isDayTime())
             return true;
-        if (Night && world.isDayTime())
-            return true;
-        return false;
+        return Night && world.isDayTime();
     }
 
     public void invalidate() {

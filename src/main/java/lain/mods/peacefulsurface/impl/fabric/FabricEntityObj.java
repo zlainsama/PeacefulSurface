@@ -6,10 +6,10 @@ import net.minecraft.entity.SpawnGroup;
 
 public class FabricEntityObj implements IEntityObj {
 
-    private String name;
-    private boolean animal;
-    private boolean living;
-    private boolean monster;
+    private final String name;
+    private final boolean animal;
+    private final boolean living;
+    private final boolean monster;
 
     public FabricEntityObj(EntityType<?> entity) {
         if (entity == null)

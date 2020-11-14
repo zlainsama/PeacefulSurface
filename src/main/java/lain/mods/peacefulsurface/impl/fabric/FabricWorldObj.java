@@ -8,8 +8,8 @@ import java.lang.ref.WeakReference;
 
 public class FabricWorldObj implements IWorldObj {
 
-    private WeakReference<ServerWorld> w;
-    private String name;
+    private final WeakReference<ServerWorld> w;
+    private final String name;
 
     public FabricWorldObj(ServerWorld world) {
         if (world == null)
