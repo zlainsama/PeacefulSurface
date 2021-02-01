@@ -3,11 +3,18 @@ package lain.mods.peacefulsurface.impl.forge;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import corgitaco.enchancedcelestials.data.world.LunarData;
+import corgitaco.enchancedcelestials.lunarevent.BloodMoon;
+import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
+import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.ModList;
+import org.apache.logging.log4j.LogManager;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ForgeWorldObj implements IWorldObj {
 
@@ -35,6 +42,7 @@ public class ForgeWorldObj implements IWorldObj {
         }
 
     });
+    private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!ModList.get().isLoaded("enhancedcelestials"));
 
     WeakReference<ServerWorld> w;
     String name;
@@ -71,7 +79,20 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public boolean isBloodMoon() {
-        return false; // Not implemented
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return false;
+
+        if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
+            try {
+                return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
+            } catch (Throwable t) {
+                LogManager.getLogger(ForgePeacefulSurface.class).error("error checking BloodMoon", t);
+                failedCompat_BloodMoon_EnhancedCelestials.set(true);
+            }
+        }
+
+        return false;
     }
 
     @Override
