@@ -25,6 +25,9 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean Living;
     public boolean Monster;
     public boolean Animal;
+    public boolean UseMobFilter;
+    public boolean UseDimensionFilter;
+    public boolean UseBiomeFilter;
     public boolean Checking_LightLevel;
     public boolean Checking_Altitude;
     public boolean Sunny;
@@ -34,10 +37,12 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean Night;
     public boolean InvertedMobFilter;
     public boolean InvertedDimensionFilter;
+    public boolean InvertedBiomeFilter;
     public boolean InvertedLightLevelChecking;
     public boolean InvertedAltitudeChecking;
     public String mobFilter = "";
     public String dimensionFilter = "";
+    public String biomeFilter = "";
     public int LightLevel;
     public int Altitude;
     public int MoonPhase;
@@ -51,6 +56,7 @@ public class JsonRule implements IEntitySpawnFilter {
     private transient boolean valid = false;
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
+    private transient Pattern _biomeFilter;
 
     public static Collection<JsonRule> fromDirectory(File dir) throws IOException {
         return fromDirectory(dir, ignored -> true);
@@ -108,21 +114,36 @@ public class JsonRule implements IEntitySpawnFilter {
         String mobName = entity.getEntityName();
         if (mobName == null)
             return false;
-        if (InvertedMobFilter) {
-            if (!_mobFilter.matcher(mobName).lookingAt())
-                return false;
-        } else {
-            if (_mobFilter.matcher(mobName).lookingAt())
-                return false;
+        if (UseMobFilter) {
+            if (InvertedMobFilter) {
+                if (!_mobFilter.matcher(mobName).lookingAt())
+                    return false;
+            } else {
+                if (_mobFilter.matcher(mobName).lookingAt())
+                    return false;
+            }
         }
-        if (InvertedDimensionFilter) {
-            String dimensionName = world.getWorldName();
-            if (!_dimensionFilter.matcher(dimensionName).lookingAt())
-                return false;
-        } else {
-            String dimensionName = world.getWorldName();
-            if (_dimensionFilter.matcher(dimensionName).lookingAt())
-                return false;
+        if (UseDimensionFilter) {
+            if (InvertedDimensionFilter) {
+                String dimensionName = world.getWorldName();
+                if (!_dimensionFilter.matcher(dimensionName).lookingAt())
+                    return false;
+            } else {
+                String dimensionName = world.getWorldName();
+                if (_dimensionFilter.matcher(dimensionName).lookingAt())
+                    return false;
+            }
+        }
+        if (UseBiomeFilter) {
+            if (InvertedBiomeFilter) {
+                String biomeName = world.getBiomeName(x, y, z);
+                if (!_biomeFilter.matcher(biomeName).lookingAt())
+                    return false;
+            } else {
+                String biomeName = world.getBiomeName(x, y, z);
+                if (_biomeFilter.matcher(biomeName).lookingAt())
+                    return false;
+            }
         }
         if (Checking_LightLevel) {
             int n = world.getLightLevel(x, y, z);
@@ -165,6 +186,7 @@ public class JsonRule implements IEntitySpawnFilter {
             MoonPhase = 0;
         _mobFilter = Pattern.compile(mobFilter);
         _dimensionFilter = Pattern.compile(dimensionFilter);
+        _biomeFilter = Pattern.compile(biomeFilter);
         valid = true;
     }
 

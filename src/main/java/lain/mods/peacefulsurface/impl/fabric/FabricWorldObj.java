@@ -19,6 +19,14 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
+    public String getBiomeName(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null) // gc
+            return "UNKNOWN";
+        return o.getBiome(new BlockPos(x, y, z)).toString();
+    }
+
+    @Override
     public int getLightLevel(double x, double y, double z) {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
