@@ -11,7 +11,6 @@ import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.ModList;
-import org.apache.logging.log4j.LogManager;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -57,6 +56,14 @@ public class ForgeWorldObj implements IWorldObj {
     }
 
     @Override
+    public String getBiomeName(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return "UNKNOWN";
+        return o.getBiome(new BlockPos(x, y, z)).toString();
+    }
+
+    @Override
     public int getLightLevel(double x, double y, double z) {
         ServerWorld o;
         if ((o = w.get()) == null)
@@ -87,7 +94,7 @@ public class ForgeWorldObj implements IWorldObj {
             try {
                 return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
             } catch (Throwable t) {
-                LogManager.getLogger(ForgePeacefulSurface.class).error("error checking BloodMoon", t);
+                ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
             }
         }

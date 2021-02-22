@@ -3,6 +3,14 @@ package lain.mods.peacefulsurface.api.interfaces;
 public interface IWorldObj {
 
     /**
+     * @param x the x coordinates to query about BiomeName.
+     * @param y the y coordinates to query about BiomeName.
+     * @param z the z coordinates to query about BiomeName.
+     * @return the BiomeName of the queried position.
+     */
+    String getBiomeName(double x, double y, double z);
+
+    /**
      * @param x the x coordinates to query about LightLevel.
      * @param y the y coordinates to query about LightLevel.
      * @param z the z coordinates to query about LightLevel.
