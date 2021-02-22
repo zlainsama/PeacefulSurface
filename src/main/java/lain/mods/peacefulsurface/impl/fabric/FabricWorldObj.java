@@ -1,12 +1,19 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
+import corgitaco.enchancedcelestials.data.world.LunarData;
+import corgitaco.enchancedcelestials.lunarevent.BloodMoon;
+import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FabricWorldObj implements IWorldObj {
+
+    private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!FabricLoader.getInstance().isModLoaded("enhancedcelestials"));
 
     private final WeakReference<ServerWorld> w;
     private final String name;
@@ -49,7 +56,20 @@ public class FabricWorldObj implements IWorldObj {
 
     @Override
     public boolean isBloodMoon() {
-        // not implemented
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return false;
+
+        if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
+            try {
+                return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
+            } catch (Throwable t) {
+                System.err.println("error checking BloodMoon");
+                t.printStackTrace();
+                failedCompat_BloodMoon_EnhancedCelestials.set(true);
+            }
+        }
+
         return false;
     }
 
