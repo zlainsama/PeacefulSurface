@@ -15,6 +15,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.WorldAccess;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public class FabricPeacefulSurface implements ModInitializer {
+
+    public static final Logger LOGGER = LogManager.getLogger(FabricPeacefulSurface.class);
 
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
     private static final Map<WorldAccess, FabricWorldObj> worlds = new WeakHashMap<>();
@@ -66,29 +70,27 @@ public class FabricPeacefulSurface implements ModInitializer {
 
     public void reloadConfig() {
         try {
-            System.out.println("[PeacefulSurface] Loading filters...");
+            LOGGER.info("[PeacefulSurface] Loading filters...");
             PeaceAPI.clearFilters();
             File dir = Paths.get(".", "config", "PeacefulSurface_Rules").toFile();
 
             if (!dir.exists()) {
                 if (dir.mkdirs()) {
                     try {
-                        System.out.println("[PeacefulSurface] Writing DefaultRule...");
+                        LOGGER.info("[PeacefulSurface] Writing DefaultRule...");
                         FileUtils.copyInputStreamToFile(FabricPeacefulSurface.class.getResourceAsStream("/DefaultRule.json"), new File(dir, "DefaultRule.json"));
-                        System.out.println("[PeacefulSurface] Successfully wrote DefaultRule.");
+                        LOGGER.info("[PeacefulSurface] Successfully wrote DefaultRule.");
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        System.err.println("[PeacefulSurface] Failed to write DefaultRule.");
+                        LOGGER.error("[PeacefulSurface] Failed to write DefaultRule.", e);
                     }
                 }
             }
 
             JsonRule.fromDirectory(dir).forEach(PeaceAPI::addFilter);
             PeaceAPI.notifyReloadListeners();
-            System.out.println(String.format("[PeacefulSurface] Loaded %d filter%s.", PeaceAPI.countFilters(), PeaceAPI.countFilters() == 1 ? "" : "s"));
+            LOGGER.info("[PeacefulSurface] Loaded {} filters.", PeaceAPI.countFilters());
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("[PeacefulSurface] Failed to load filters.");
+            LOGGER.error("[PeacefulSurface] Failed to load filters.", e);
             PeaceAPI.clearFilters();
         }
     }

@@ -4,6 +4,7 @@ import corgitaco.enchancedcelestials.data.world.LunarData;
 import corgitaco.enchancedcelestials.lunarevent.BloodMoon;
 import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
+import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -64,8 +65,7 @@ public class FabricWorldObj implements IWorldObj {
             try {
                 return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
             } catch (Throwable t) {
-                System.err.println("error checking BloodMoon");
-                t.printStackTrace();
+                FabricPeacefulSurface.LOGGER.error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
             }
         }
