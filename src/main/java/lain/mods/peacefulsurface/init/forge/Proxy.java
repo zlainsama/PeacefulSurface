@@ -30,16 +30,16 @@ enum Proxy {
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
     void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(((IServerWorld) event.getWorld()).getWorld()), event.getX(), event.getY(), event.getZ()))
+        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(((IServerWorld) event.getWorld()).getLevel()), event.getX(), event.getY(), event.getZ()))
             return;
         event.setResult(Result.DENY);
     }
 
     void handleRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermissionLevel(3)).executes(context -> {
+        event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
             LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
-                context.getSource().sendFeedback(new TranslationTextComponent("commands.reloadpeace.done"), true);
+                context.getSource().sendSuccess(new TranslationTextComponent("commands.reloadpeace.done"), true);
             });
             return 0;
         }));

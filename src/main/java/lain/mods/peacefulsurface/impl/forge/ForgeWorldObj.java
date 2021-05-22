@@ -33,7 +33,7 @@ public class ForgeWorldObj implements IWorldObj {
 
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
-                obj.name = key.getDimensionKey().getLocation().toString();
+                obj.name = key.dimension().location().toString();
                 return obj;
             } catch (Throwable t) {
                 return dummy;
@@ -68,7 +68,7 @@ public class ForgeWorldObj implements IWorldObj {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;
-        return o.isThundering() ? o.getNeighborAwareLightSubtracted(new BlockPos(x, y, z), 10) : o.getLight(new BlockPos(x, y, z));
+        return o.isThundering() ? o.getMaxLocalRawBrightness(new BlockPos(x, y, z), 10) : o.getMaxLocalRawBrightness(new BlockPos(x, y, z));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ForgeWorldObj implements IWorldObj {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;
-        return o.getDimensionType().getMoonPhase(o.func_241851_ab());
+        return o.dimensionType().moonPhase(o.dayTime());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ForgeWorldObj implements IWorldObj {
         ServerWorld o;
         if ((o = w.get()) == null)
             return false;
-        return o.isDaytime();
+        return o.isDay();
     }
 
     @Override

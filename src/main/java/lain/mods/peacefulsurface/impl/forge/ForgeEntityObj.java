@@ -27,9 +27,9 @@ public class ForgeEntityObj implements IEntityObj {
             try {
                 ForgeEntityObj obj = new ForgeEntityObj();
                 obj.name = EntityType.getKey(key).toString();
-                obj.animal = key.getClassification().getAnimal();
-                obj.living = key.getClassification() != EntityClassification.MISC;
-                obj.monster = !key.getClassification().getPeacefulCreature();
+                obj.animal = key.getCategory().isPersistent() && key.getCategory().isFriendly();
+                obj.living = key.getCategory() != EntityClassification.MISC;
+                obj.monster = !key.getCategory().isFriendly();
                 return obj;
             } catch (Throwable t) {
                 return dummy;
