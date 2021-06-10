@@ -15,7 +15,7 @@ public class FabricEntityObj implements IEntityObj {
         if (entity == null)
             throw new IllegalArgumentException("entity must not be null");
         name = EntityType.getId(entity).toString();
-        animal = entity.getSpawnGroup().isAnimal();
+        animal = entity.getSpawnGroup().isRare() && entity.getSpawnGroup().isPeaceful();
         living = entity.getSpawnGroup() != SpawnGroup.MISC;
         monster = !entity.getSpawnGroup().isPeaceful();
     }
