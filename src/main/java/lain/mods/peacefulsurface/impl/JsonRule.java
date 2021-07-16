@@ -30,6 +30,8 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean UseBiomeFilter;
     public boolean Checking_LightLevel;
     public boolean Checking_Altitude;
+    public boolean Checking_BlockLight;
+    public boolean Checking_SkyLight;
     public boolean Sunny;
     public boolean Raining;
     public boolean Thundering;
@@ -40,11 +42,15 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean InvertedBiomeFilter;
     public boolean InvertedLightLevelChecking;
     public boolean InvertedAltitudeChecking;
+    public boolean InvertedBlockLightChecking;
+    public boolean InvertedSkyLightChecking;
     public String mobFilter = "";
     public String dimensionFilter = "";
     public String biomeFilter = "";
     public int LightLevel;
     public int Altitude;
+    public int BlockLight;
+    public int SkyLight;
     public int MoonPhase;
     public boolean DisabledUnderBloodmoon;
     public boolean DisabledWhenSunny;
@@ -161,6 +167,26 @@ public class JsonRule implements IEntitySpawnFilter {
                     return true;
             } else {
                 if (y > Altitude)
+                    return true;
+            }
+        }
+        if (Checking_BlockLight) {
+            int n = world.getBlockLight(x, y, z);
+            if (InvertedBlockLightChecking) {
+                if (n <= BlockLight)
+                    return true;
+            } else {
+                if (n > BlockLight)
+                    return true;
+            }
+        }
+        if (Checking_SkyLight) {
+            int n = world.getSkyLight(x, y, z);
+            if (InvertedSkyLightChecking) {
+                if (n <= SkyLight)
+                    return true;
+            } else {
+                if (n > SkyLight)
                     return true;
             }
         }

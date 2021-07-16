@@ -9,6 +9,7 @@ import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.ModList;
 
@@ -69,6 +70,22 @@ public class ForgeWorldObj implements IWorldObj {
         if ((o = w.get()) == null)
             return 0;
         return o.isThundering() ? o.getMaxLocalRawBrightness(new BlockPos(x, y, z), 10) : o.getMaxLocalRawBrightness(new BlockPos(x, y, z));
+    }
+
+    @Override
+    public int getBlockLight(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return 0;
+        return o.getBrightness(LightType.BLOCK, new BlockPos(x, y, z));
+    }
+
+    @Override
+    public int getSkyLight(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return 0;
+        return o.getBrightness(LightType.SKY, new BlockPos(x, y, z)) - (o.isThundering() ? 10 : o.getSkyDarken());
     }
 
     @Override
