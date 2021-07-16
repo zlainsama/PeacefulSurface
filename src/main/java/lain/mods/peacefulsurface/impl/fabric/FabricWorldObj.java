@@ -3,6 +3,7 @@ package lain.mods.peacefulsurface.impl.fabric;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LightType;
 
 import java.lang.ref.WeakReference;
 
@@ -32,6 +33,22 @@ public class FabricWorldObj implements IWorldObj {
         if ((o = w.get()) == null) // gc
             return 0;
         return o.isThundering() ? o.getLightLevel(new BlockPos(x, y, z), 10) : o.getLightLevel(new BlockPos(x, y, z));
+    }
+
+    @Override
+    public int getBlockLight(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return 0;
+        return o.getLightLevel(LightType.BLOCK, new BlockPos(x, y, z));
+    }
+
+    @Override
+    public int getSkyLight(double x, double y, double z) {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return 0;
+        return o.getLightLevel(LightType.SKY, new BlockPos(x, y, z)) - (o.isThundering() ? 10 : o.getAmbientDarkness());
     }
 
     @Override

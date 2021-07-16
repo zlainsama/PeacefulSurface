@@ -19,6 +19,22 @@ public interface IWorldObj {
     int getLightLevel(double x, double y, double z);
 
     /**
+     * @param x the x coordinates to query about BlockLight.
+     * @param y the y coordinates to query about BlockLight.
+     * @param z the z coordinates to query about BlockLight.
+     * @return the BlockLight of the queried position.
+     */
+    int getBlockLight(double x, double y, double z);
+
+    /**
+     * @param x the x coordinates to query about SkyLight.
+     * @param y the y coordinates to query about SkyLight.
+     * @param z the z coordinates to query about SkyLight.
+     * @return the SkyLight of the queried position.
+     */
+    int getSkyLight(double x, double y, double z);
+
+    /**
      * @return the current MoonPhase of the world.
      */
     int getMoonPhase();
