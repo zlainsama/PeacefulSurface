@@ -3,14 +3,10 @@ package lain.mods.peacefulsurface.impl.forge;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import corgitaco.enchancedcelestials.data.world.LunarData;
-import corgitaco.enchancedcelestials.lunarevent.BloodMoon;
-import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
-import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.fml.ModList;
 
 import java.lang.ref.WeakReference;
@@ -26,10 +22,10 @@ public class ForgeWorldObj implements IWorldObj {
         }
 
     };
-    private static final LoadingCache<ServerWorld, ForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerWorld, ForgeWorldObj>() {
+    private static final LoadingCache<ServerLevel, ForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerLevel, ForgeWorldObj>() {
 
         @Override
-        public ForgeWorldObj load(ServerWorld key) throws Exception {
+        public ForgeWorldObj load(ServerLevel key) throws Exception {
             try {
 
                 ForgeWorldObj obj = new ForgeWorldObj();
@@ -44,13 +40,13 @@ public class ForgeWorldObj implements IWorldObj {
     });
     private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!ModList.get().isLoaded("enhancedcelestials"));
 
-    WeakReference<ServerWorld> w;
+    WeakReference<ServerLevel> w;
     String name;
 
     private ForgeWorldObj() {
     }
 
-    public static ForgeWorldObj get(ServerWorld world) {
+    public static ForgeWorldObj get(ServerLevel world) {
         if (world == null)
             return dummy;
         return cache.getUnchecked(world);
@@ -58,7 +54,7 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public String getBiomeName(double x, double y, double z) {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return "UNKNOWN";
         return o.getBiome(new BlockPos(x, y, z)).toString();
@@ -66,7 +62,7 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public int getLightLevel(double x, double y, double z) {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return 0;
         return o.isThundering() ? o.getMaxLocalRawBrightness(new BlockPos(x, y, z), 10) : o.getMaxLocalRawBrightness(new BlockPos(x, y, z));
@@ -74,23 +70,23 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public int getBlockLight(double x, double y, double z) {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return 0;
-        return o.getBrightness(LightType.BLOCK, new BlockPos(x, y, z));
+        return o.getBrightness(LightLayer.BLOCK, new BlockPos(x, y, z));
     }
 
     @Override
     public int getSkyLight(double x, double y, double z) {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return 0;
-        return o.getBrightness(LightType.SKY, new BlockPos(x, y, z)) - (o.isThundering() ? 10 : o.getSkyDarken());
+        return o.getBrightness(LightLayer.SKY, new BlockPos(x, y, z)) - (o.isThundering() ? 10 : o.getSkyDarken());
     }
 
     @Override
     public int getMoonPhase() {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return 0;
         return o.dimensionType().moonPhase(o.dayTime());
@@ -103,25 +99,12 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public boolean isBloodMoon() {
-        ServerWorld o;
-        if ((o = w.get()) == null)
-            return false;
-
-        if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
-            try {
-                return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
-            } catch (Throwable t) {
-                ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
-                failedCompat_BloodMoon_EnhancedCelestials.set(true);
-            }
-        }
-
-        return false;
+        return false; // no implementation
     }
 
     @Override
     public boolean isDayTime() {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return false;
         return o.isDay();
@@ -129,7 +112,7 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public boolean isRaining() {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return false;
         return o.isRaining();
@@ -137,7 +120,7 @@ public class ForgeWorldObj implements IWorldObj {
 
     @Override
     public boolean isThundering() {
-        ServerWorld o;
+        ServerLevel o;
         if ((o = w.get()) == null)
             return false;
         return o.isThundering();

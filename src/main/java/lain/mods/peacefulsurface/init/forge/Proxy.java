@@ -5,16 +5,16 @@ import lain.mods.peacefulsurface.api.PeaceAPI;
 import lain.mods.peacefulsurface.impl.JsonRule;
 import lain.mods.peacefulsurface.impl.forge.ForgeEntityObj;
 import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
+import net.minecraftforge.fmllegacy.LogicalSidedProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ enum Proxy {
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
     void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(((IServerWorld) event.getWorld()).getLevel()), event.getX(), event.getY(), event.getZ()))
+        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getWorld()), event.getX(), event.getY(), event.getZ()))
             return;
         event.setResult(Result.DENY);
     }
@@ -39,7 +39,7 @@ enum Proxy {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
             LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
-                context.getSource().sendSuccess(new TranslationTextComponent("commands.reloadpeace.done"), true);
+                context.getSource().sendSuccess(new TranslatableComponent("commands.reloadpeace.done"), true);
             });
             return 0;
         }));

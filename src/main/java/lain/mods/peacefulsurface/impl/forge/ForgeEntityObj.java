@@ -4,9 +4,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lain.mods.peacefulsurface.api.interfaces.IEntityObj;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class ForgeEntityObj implements IEntityObj {
 
@@ -28,7 +28,7 @@ public class ForgeEntityObj implements IEntityObj {
                 ForgeEntityObj obj = new ForgeEntityObj();
                 obj.name = EntityType.getKey(key).toString();
                 obj.animal = key.getCategory().isPersistent() && key.getCategory().isFriendly();
-                obj.living = key.getCategory() != EntityClassification.MISC;
+                obj.living = key.getCategory() != MobCategory.MISC;
                 obj.monster = !key.getCategory().isFriendly();
                 return obj;
             } catch (Throwable t) {
