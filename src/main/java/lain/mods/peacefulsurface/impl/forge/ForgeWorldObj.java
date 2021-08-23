@@ -3,9 +3,9 @@ package lain.mods.peacefulsurface.impl.forge;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import corgitaco.enchancedcelestials.data.world.LunarData;
-import corgitaco.enchancedcelestials.lunarevent.BloodMoon;
-import corgitaco.enchancedcelestials.lunarevent.LunarEventSystem;
+import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
+import corgitaco.enhancedcelestials.LunarContext;
+import corgitaco.enhancedcelestials.lunarevent.BloodMoon;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.util.math.BlockPos;
@@ -109,7 +109,8 @@ public class ForgeWorldObj implements IWorldObj {
 
         if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
             try {
-                return LunarEventSystem.LUNAR_EVENTS_MAP.get(LunarData.get(o).getEvent()) instanceof BloodMoon;
+                LunarContext context = ((EnhancedCelestialsWorldData) o).getLunarContext();
+                return context != null && context.getCurrentEvent() instanceof BloodMoon;
             } catch (Throwable t) {
                 ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
