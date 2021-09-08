@@ -27,7 +27,6 @@ public class ForgeWorldObj implements IWorldObj {
         @Override
         public ForgeWorldObj load(ServerLevel key) throws Exception {
             try {
-
                 ForgeWorldObj obj = new ForgeWorldObj();
                 obj.w = new WeakReference<>(key);
                 obj.name = key.dimension().location().toString();
