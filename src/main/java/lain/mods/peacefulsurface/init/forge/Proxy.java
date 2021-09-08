@@ -30,7 +30,7 @@ enum Proxy {
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
     void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.isSpawner() || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getWorld()), event.getX(), event.getY(), event.getZ()))
+        if (event.isSpawner() || !(event.getWorld() instanceof ServerLevel) || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getWorld()), event.getX(), event.getY(), event.getZ()))
             return;
         event.setResult(Result.DENY);
     }
