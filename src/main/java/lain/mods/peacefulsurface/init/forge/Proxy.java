@@ -7,14 +7,13 @@ import lain.mods.peacefulsurface.impl.forge.ForgeEntityObj;
 import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fmllegacy.LogicalSidedProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +36,7 @@ enum Proxy {
 
     void handleRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
-            LogicalSidedProvider.INSTANCE.<MinecraftServer>get(LogicalSide.SERVER).execute(() -> {
+            LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
                 context.getSource().sendSuccess(new TranslatableComponent("commands.reloadpeace.done"), true);
             });
