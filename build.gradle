@@ -14,7 +14,7 @@ import net.minecraftforge.gradle.common.tasks.SignJar
 
 import java.nio.file.Files
 
-version = "1.18-v1"
+version = "1.18.1-v1"
 group = "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
@@ -22,7 +22,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18'
+    mappings channel: 'official', version: '1.18.1'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -32,9 +32,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18-38.0.2'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
 
-    implementation fg.deobf("curse.maven:enhancedcelestials-438447:3532093")
+    implementation fg.deobf("curse.maven:enhancedcelestials-438447:3544493")
 }
 
 processResources {
