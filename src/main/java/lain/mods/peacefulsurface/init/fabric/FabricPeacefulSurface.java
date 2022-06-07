@@ -11,7 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Style;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.WorldAccess;
 import org.apache.commons.io.FileUtils;
@@ -62,7 +62,7 @@ public class FabricPeacefulSurface implements ModInitializer {
         }).executes(context -> {
             server.execute(() -> {
                 reloadConfig();
-                context.getSource().sendFeedback(new TranslatableText("commands.reloadpeace.done", new Object[0]).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
+                context.getSource().sendFeedback(Text.translatable("commands.reloadpeace.done").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
             });
             return 0;
         }));
