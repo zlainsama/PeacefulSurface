@@ -6,7 +6,7 @@ import lain.mods.peacefulsurface.impl.JsonRule;
 import lain.mods.peacefulsurface.impl.forge.ForgeEntityObj;
 import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LogicalSidedProvider;
@@ -38,7 +38,7 @@ enum Proxy {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
             LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
-                context.getSource().sendSuccess(new TranslatableComponent("commands.reloadpeace.done"), true);
+                context.getSource().sendSuccess(Component.translatable("commands.reloadpeace.done"), true);
             });
             return 0;
         }));
