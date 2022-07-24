@@ -4,8 +4,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.LunarContext;
-import corgitaco.enhancedcelestials.lunarevent.BloodMoon;
+import corgitaco.enhancedcelestials.api.ECLunarEventTags;
+import corgitaco.enhancedcelestials.lunarevent.LunarContext;
+import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.fml.ModList;
 
 import java.lang.ref.WeakReference;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ForgeWorldObj implements IWorldObj {
@@ -108,8 +110,11 @@ public class ForgeWorldObj implements IWorldObj {
 
         if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
             try {
-                LunarContext context = ((EnhancedCelestialsWorldData) o).getLunarContext();
-                return context != null && context.getCurrentEvent() instanceof BloodMoon;
+                return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
+                        .map(LunarContext::getLunarForecast)
+                        .map(LunarForecast::getCurrentEvent)
+                        .map(lunarEvent -> lunarEvent.is(ECLunarEventTags.BLOOD_MOON))
+                        .orElse(Boolean.FALSE);
             } catch (Throwable t) {
                 ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);

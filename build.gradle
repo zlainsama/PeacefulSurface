@@ -7,7 +7,7 @@ import net.minecraftforge.gradle.common.tasks.SignJar
 
 import java.nio.file.Files
 
-version = "1.19-v2"
+version = "1.19-v2a"
 group = "lain.mods.peacefulsurface"
 archivesBaseName = "PeacefulSurface"
 
@@ -27,7 +27,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19-41.0.99'
 
-    implementation fg.deobf("curse.maven:enhancedcelestials-438447:3825666")
+    implementation fg.deobf("curse.maven:enhancedcelestials-438447:3895339")
 }
 
 processResources {
