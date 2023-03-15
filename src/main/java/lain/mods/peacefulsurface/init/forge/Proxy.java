@@ -8,6 +8,7 @@ import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -29,7 +30,7 @@ enum Proxy {
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
     void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.isSpawner() || !(event.getLevel() instanceof ServerLevel) || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getLevel()), event.getX(), event.getY(), event.getZ()))
+        if (event.isSpawner() || !(event.getLevel() instanceof ServerLevel) || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
         event.setResult(Result.DENY);
     }

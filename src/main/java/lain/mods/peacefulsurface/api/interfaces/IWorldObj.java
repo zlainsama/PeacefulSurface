@@ -8,7 +8,7 @@ public interface IWorldObj {
      * @param z the z coordinates to query about BiomeName.
      * @return the BiomeName of the queried position.
      */
-    String getBiomeName(double x, double y, double z);
+    String getBiomeName(int x, int y, int z);
 
     /**
      * @param x the x coordinates to query about LightLevel.
@@ -16,7 +16,7 @@ public interface IWorldObj {
      * @param z the z coordinates to query about LightLevel.
      * @return the LightLevel of the queried position.
      */
-    int getLightLevel(double x, double y, double z);
+    int getLightLevel(int x, int y, int z);
 
     /**
      * @param x the x coordinates to query about BlockLight.
@@ -24,7 +24,7 @@ public interface IWorldObj {
      * @param z the z coordinates to query about BlockLight.
      * @return the BlockLight of the queried position.
      */
-    int getBlockLight(double x, double y, double z);
+    int getBlockLight(int x, int y, int z);
 
     /**
      * @param x the x coordinates to query about SkyLight.
@@ -32,7 +32,7 @@ public interface IWorldObj {
      * @param z the z coordinates to query about SkyLight.
      * @return the SkyLight of the queried position.
      */
-    int getSkyLight(double x, double y, double z);
+    int getSkyLight(int x, int y, int z);
 
     /**
      * @return the current MoonPhase of the world.
