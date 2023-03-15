@@ -94,7 +94,7 @@ public class JsonRule implements IEntitySpawnFilter {
     }
 
     @Override
-    public boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z) {
+    public boolean filterEntity(IEntityObj entity, IWorldObj world, int x, int y, int z) {
         validate();
 
         if (DisabledUnderBloodmoon && world.isBloodMoon())

@@ -30,7 +30,7 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
-    public String getBiomeName(double x, double y, double z) {
+    public String getBiomeName(int x, int y, int z) {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return "UNKNOWN";
@@ -38,7 +38,7 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
-    public int getLightLevel(double x, double y, double z) {
+    public int getLightLevel(int x, int y, int z) {
         ServerWorld o;
         if ((o = w.get()) == null) // gc
             return 0;
@@ -46,7 +46,7 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
-    public int getBlockLight(double x, double y, double z) {
+    public int getBlockLight(int x, int y, int z) {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;
@@ -54,7 +54,7 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
-    public int getSkyLight(double x, double y, double z) {
+    public int getSkyLight(int x, int y, int z) {
         ServerWorld o;
         if ((o = w.get()) == null)
             return 0;

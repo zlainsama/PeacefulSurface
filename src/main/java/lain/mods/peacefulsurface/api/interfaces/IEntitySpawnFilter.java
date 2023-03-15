@@ -15,6 +15,6 @@ public interface IEntitySpawnFilter {
      * @param z      the z coordinates the entity is about to spawn at.
      * @return if true, the entity will be prevented from spawning.
      */
-    boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z);
+    boolean filterEntity(IEntityObj entity, IWorldObj world, int x, int y, int z);
 
 }

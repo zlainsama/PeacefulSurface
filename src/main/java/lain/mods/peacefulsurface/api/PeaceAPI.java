@@ -49,7 +49,7 @@ public class PeaceAPI {
      * @param z      the z coordinates the entity is about to spawn at.
      * @return true if any filters returned true.
      */
-    public static boolean filterEntity(IEntityObj entity, IWorldObj world, double x, double y, double z) {
+    public static boolean filterEntity(IEntityObj entity, IWorldObj world, int x, int y, int z) {
         return filters.stream().filter(IEntitySpawnFilter::enabled).anyMatch(filter -> {
             return filter.filterEntity(entity, world, x, y, z);
         });
