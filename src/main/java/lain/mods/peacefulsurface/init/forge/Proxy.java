@@ -7,13 +7,12 @@ import lain.mods.peacefulsurface.impl.forge.ForgeEntityObj;
 import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.fml.LogicalSide;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -29,10 +28,11 @@ enum Proxy {
 
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
-    void handleCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.isSpawner() || !(event.getLevel() instanceof ServerLevel) || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get((ServerLevel) event.getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
+    void handleCheckSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
-        event.setResult(Result.DENY);
+        event.setSpawnCancelled(true);
+        event.setCanceled(true);
     }
 
     void handleRegisterCommands(RegisterCommandsEvent event) {
