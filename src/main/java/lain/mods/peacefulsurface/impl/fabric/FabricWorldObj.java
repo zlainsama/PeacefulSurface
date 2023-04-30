@@ -2,7 +2,7 @@ package lain.mods.peacefulsurface.impl.fabric;
 
 import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
 import corgitaco.enhancedcelestials.api.ECLunarEventTags;
-import corgitaco.enhancedcelestials.lunarevent.LunarContext;
+import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
@@ -83,8 +83,8 @@ public class FabricWorldObj implements IWorldObj {
         if (!failedCompat_BloodMoon_EnhancedCelestials.get()) {
             try {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
-                        .map(LunarContext::getLunarForecast)
-                        .map(LunarForecast::getCurrentEvent)
+                        .map(EnhancedCelestialsContext::getLunarForecast)
+                        .map(LunarForecast::getCurrentEventRaw)
                         .map(lunarEvent -> lunarEvent.isIn(ECLunarEventTags.BLOOD_MOON))
                         .orElse(Boolean.FALSE);
             } catch (Throwable t) {
