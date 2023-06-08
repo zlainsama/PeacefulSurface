@@ -62,7 +62,7 @@ public class FabricPeacefulSurface implements ModInitializer {
         }).executes(context -> {
             server.execute(() -> {
                 reloadConfig();
-                context.getSource().sendFeedback(Text.translatable("commands.reloadpeace.done").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
+                context.getSource().sendFeedback(() -> Text.translatable("commands.reloadpeace.done").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), true);
             });
             return 0;
         }));
