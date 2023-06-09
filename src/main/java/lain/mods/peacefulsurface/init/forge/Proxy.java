@@ -39,7 +39,7 @@ enum Proxy {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
             LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER).execute(() -> {
                 reloadRules();
-                context.getSource().sendSuccess(Component.translatable("commands.reloadpeace.done"), true);
+                context.getSource().sendSuccess(() -> Component.translatable("commands.reloadpeace.done"), true);
             });
             return 0;
         }));
