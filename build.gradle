@@ -15,6 +15,9 @@ repositories {
 }
 
 loom {
+    mixin {
+        defaultRefmapName = "${archivesBaseName}-refmap.json"
+    }
 }
 
 dependencies {

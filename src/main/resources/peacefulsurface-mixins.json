@@ -8,5 +8,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "PeacefulSurface-refmap.json"
+  "refmap": "peacefulsurface-refmap.json"
 }

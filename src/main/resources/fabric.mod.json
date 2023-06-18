@@ -18,7 +18,7 @@
     ]
   },
   "mixins": [
-    "PeacefulSurface-mixins.json"
+    "peacefulsurface-mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.12.0",
