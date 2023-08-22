@@ -8,7 +8,9 @@ import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.LightType;
 
 import java.lang.ref.WeakReference;
@@ -85,8 +87,18 @@ public class FabricWorldObj implements IWorldObj {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
                         .map(EnhancedCelestialsContext::getLunarForecast)
                         .map(LunarForecast::getCurrentEventRaw)
-                        .map(lunarEvent -> lunarEvent.isIn(ECLunarEventTags.BLOOD_MOON))
-                        .orElse(Boolean.FALSE);
+                        .map(lunarEventHolder -> {
+                            if (lunarEventHolder.isIn(ECLunarEventTags.BLOOD_MOON))
+                                return Boolean.TRUE;
+                            return lunarEventHolder.getKey()
+                                    .map(RegistryKey::getValue)
+                                    .map(Identifier::toString)
+                                    .map(location -> {
+                                        if ("enhancedcelestials:blood_moon".equals(location) || "enhancedcelestials:super_blood_moon".equals(location))
+                                            return Boolean.TRUE;
+                                        return Boolean.FALSE;
+                                    }).orElse(Boolean.FALSE);
+                        }).orElse(Boolean.FALSE) == Boolean.TRUE;
             } catch (Throwable t) {
                 FabricPeacefulSurface.LOGGER.error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
