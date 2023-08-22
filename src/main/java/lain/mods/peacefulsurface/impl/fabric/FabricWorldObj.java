@@ -7,10 +7,10 @@ import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.LightType;
 
 import java.lang.ref.WeakReference;
