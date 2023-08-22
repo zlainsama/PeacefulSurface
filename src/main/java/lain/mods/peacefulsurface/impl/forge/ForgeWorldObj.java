@@ -10,6 +10,8 @@ import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LightLayer;
 import net.minecraftforge.fml.ModList;
@@ -113,8 +115,18 @@ public class ForgeWorldObj implements IWorldObj {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
                         .map(EnhancedCelestialsContext::getLunarForecast)
                         .map(LunarForecast::getCurrentEventRaw)
-                        .map(lunarEvent -> lunarEvent.is(ECLunarEventTags.BLOOD_MOON))
-                        .orElse(Boolean.FALSE);
+                        .map(lunarEventHolder -> {
+                            if (lunarEventHolder.is(ECLunarEventTags.BLOOD_MOON))
+                                return Boolean.TRUE;
+                            return lunarEventHolder.unwrapKey()
+                                    .map(ResourceKey::location)
+                                    .map(ResourceLocation::toString)
+                                    .map(location -> {
+                                        if ("enhancedcelestials:blood_moon".equals(location) || "enhancedcelestials:super_blood_moon".equals(location))
+                                            return Boolean.TRUE;
+                                        return Boolean.FALSE;
+                                    }).orElse(Boolean.FALSE);
+                        }).orElse(Boolean.FALSE) == Boolean.TRUE;
             } catch (Throwable t) {
                 ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
