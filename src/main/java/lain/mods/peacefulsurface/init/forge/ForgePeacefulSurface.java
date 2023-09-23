@@ -9,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 public class ForgePeacefulSurface {
 
     public ForgePeacefulSurface() {
-//        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (v, n) -> true));
-
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     }
 
