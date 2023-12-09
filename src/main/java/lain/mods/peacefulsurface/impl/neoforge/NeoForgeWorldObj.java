@@ -1,4 +1,4 @@
-package lain.mods.peacefulsurface.impl.forge;
+package lain.mods.peacefulsurface.impl.neoforge;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -8,21 +8,21 @@ import corgitaco.enhancedcelestials.api.ECLunarEventTags;
 import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
 import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
-import lain.mods.peacefulsurface.init.forge.ForgePeacefulSurface;
+import lain.mods.peacefulsurface.init.neoforge.NeoForgePeacefulSurface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LightLayer;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ForgeWorldObj implements IWorldObj {
+public class NeoForgeWorldObj implements IWorldObj {
 
-    private static final ForgeWorldObj dummy = new ForgeWorldObj() {
+    private static final NeoForgeWorldObj dummy = new NeoForgeWorldObj() {
 
         {
             w = new WeakReference<>(null);
@@ -30,12 +30,12 @@ public class ForgeWorldObj implements IWorldObj {
         }
 
     };
-    private static final LoadingCache<ServerLevel, ForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerLevel, ForgeWorldObj>() {
+    private static final LoadingCache<ServerLevel, NeoForgeWorldObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<ServerLevel, NeoForgeWorldObj>() {
 
         @Override
-        public ForgeWorldObj load(ServerLevel key) throws Exception {
+        public NeoForgeWorldObj load(ServerLevel key) throws Exception {
             try {
-                ForgeWorldObj obj = new ForgeWorldObj();
+                NeoForgeWorldObj obj = new NeoForgeWorldObj();
                 obj.w = new WeakReference<>(key);
                 obj.name = key.dimension().location().toString();
                 return obj;
@@ -50,10 +50,10 @@ public class ForgeWorldObj implements IWorldObj {
     WeakReference<ServerLevel> w;
     String name;
 
-    private ForgeWorldObj() {
+    private NeoForgeWorldObj() {
     }
 
-    public static ForgeWorldObj get(ServerLevel world) {
+    public static NeoForgeWorldObj get(ServerLevel world) {
         if (world == null)
             return dummy;
         return cache.getUnchecked(world);
@@ -128,7 +128,7 @@ public class ForgeWorldObj implements IWorldObj {
                                     }).orElse(Boolean.FALSE);
                         }).orElse(Boolean.FALSE) == Boolean.TRUE;
             } catch (Throwable t) {
-                ForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
+                NeoForgePeacefulSurface.getLogger().error("error checking BloodMoon", t);
                 failedCompat_BloodMoon_EnhancedCelestials.set(true);
             }
         }

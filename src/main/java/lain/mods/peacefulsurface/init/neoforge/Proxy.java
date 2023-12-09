@@ -1,19 +1,19 @@
-package lain.mods.peacefulsurface.init.forge;
+package lain.mods.peacefulsurface.init.neoforge;
 
 import com.google.common.io.Resources;
 import lain.mods.peacefulsurface.api.PeaceAPI;
 import lain.mods.peacefulsurface.impl.JsonRule;
-import lain.mods.peacefulsurface.impl.forge.ForgeEntityObj;
-import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
+import lain.mods.peacefulsurface.impl.neoforge.NeoForgeEntityObj;
+import lain.mods.peacefulsurface.impl.neoforge.NeoForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.LogicalSidedProvider;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.fml.LogicalSide;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.LogicalSidedProvider;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,10 +26,10 @@ enum Proxy {
 
     INSTANCE;
 
-    Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
+    Logger logger = LogManager.getLogger(NeoForgePeacefulSurface.class);
 
     void handleCheckSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
+        if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(NeoForgeEntityObj.get(event.getEntity()), NeoForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
         event.setSpawnCancelled(true);
         event.setCanceled(true);
@@ -47,8 +47,8 @@ enum Proxy {
 
     void init() {
         reloadRules();
-        MinecraftForge.EVENT_BUS.addListener(this::handleCheckSpawn);
-        MinecraftForge.EVENT_BUS.addListener(this::handleRegisterCommands);
+        NeoForge.EVENT_BUS.addListener(this::handleCheckSpawn);
+        NeoForge.EVENT_BUS.addListener(this::handleRegisterCommands);
     }
 
     void reloadRules() {

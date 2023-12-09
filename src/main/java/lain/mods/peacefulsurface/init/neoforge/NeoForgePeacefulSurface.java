@@ -1,14 +1,14 @@
-package lain.mods.peacefulsurface.init.forge;
+package lain.mods.peacefulsurface.init.neoforge;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.Logger;
 
 @Mod("peacefulsurface")
-public class ForgePeacefulSurface {
+public class NeoForgePeacefulSurface {
 
-    public ForgePeacefulSurface() {
+    public NeoForgePeacefulSurface() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     }
 

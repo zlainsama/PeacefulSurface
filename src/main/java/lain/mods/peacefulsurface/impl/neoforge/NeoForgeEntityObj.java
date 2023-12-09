@@ -1,4 +1,4 @@
-package lain.mods.peacefulsurface.impl.forge;
+package lain.mods.peacefulsurface.impl.neoforge;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -8,9 +8,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
-public class ForgeEntityObj implements IEntityObj {
+public class NeoForgeEntityObj implements IEntityObj {
 
-    private static final ForgeEntityObj dummy = new ForgeEntityObj() {
+    private static final NeoForgeEntityObj dummy = new NeoForgeEntityObj() {
 
         {
             name = "[Dummy]";
@@ -20,12 +20,12 @@ public class ForgeEntityObj implements IEntityObj {
         }
 
     };
-    private static final LoadingCache<EntityType<? extends Entity>, ForgeEntityObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<EntityType<? extends Entity>, ForgeEntityObj>() {
+    private static final LoadingCache<EntityType<? extends Entity>, NeoForgeEntityObj> cache = CacheBuilder.newBuilder().weakKeys().build(new CacheLoader<EntityType<? extends Entity>, NeoForgeEntityObj>() {
 
         @Override
-        public ForgeEntityObj load(EntityType<? extends Entity> key) throws Exception {
+        public NeoForgeEntityObj load(EntityType<? extends Entity> key) throws Exception {
             try {
-                ForgeEntityObj obj = new ForgeEntityObj();
+                NeoForgeEntityObj obj = new NeoForgeEntityObj();
                 obj.name = EntityType.getKey(key).toString();
                 obj.animal = key.getCategory().isPersistent() && key.getCategory().isFriendly();
                 obj.living = key.getCategory() != MobCategory.MISC;
@@ -43,10 +43,10 @@ public class ForgeEntityObj implements IEntityObj {
     boolean living;
     boolean monster;
 
-    private ForgeEntityObj() {
+    private NeoForgeEntityObj() {
     }
 
-    public static ForgeEntityObj get(Entity entity) {
+    public static NeoForgeEntityObj get(Entity entity) {
         if (entity == null)
             return dummy;
         return cache.getUnchecked(entity.getType());
