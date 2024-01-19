@@ -40,6 +40,11 @@ public interface IWorldObj {
     int getMoonPhase();
 
     /**
+     * @return id of the Difficulty the world is in.
+     */
+    int getDifficulty();
+
+    /**
      * @return the name of the world.
      */
     String getWorldName();
