@@ -72,6 +72,14 @@ public class FabricWorldObj implements IWorldObj {
     }
 
     @Override
+    public int getDifficulty() {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return -1;
+        return o.getDifficulty().getId();
+    }
+
+    @Override
     public String getWorldName() {
         return name;
     }
