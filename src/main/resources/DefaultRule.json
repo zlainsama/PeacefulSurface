@@ -30,6 +30,7 @@
   "BlockLight": 0,
   "SkyLight": 0,
   "MoonPhase": 0,
+  "Difficulty": 0,
   "DisabledUnderBloodmoon": false,
   "DisabledWhenSunny": false,
   "DisabledWhenRaining": false,
