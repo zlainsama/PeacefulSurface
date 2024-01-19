@@ -52,6 +52,7 @@ public class JsonRule implements IEntitySpawnFilter {
     public int BlockLight;
     public int SkyLight;
     public int MoonPhase;
+    public int Difficulty;
     public boolean DisabledUnderBloodmoon;
     public boolean DisabledWhenSunny;
     public boolean DisabledWhenRaining;
@@ -110,6 +111,8 @@ public class JsonRule implements IEntitySpawnFilter {
         if (DisabledWhenNight && !world.isDayTime())
             return false;
         if (MoonPhase != 0 && world.getMoonPhase() != (MoonPhase - 1))
+            return false;
+        if (Difficulty != 0 && world.getDifficulty() != (Difficulty - 1))
             return false;
         if (Living && !entity.isLiving())
             return false;
@@ -210,6 +213,8 @@ public class JsonRule implements IEntitySpawnFilter {
             return;
         if (MoonPhase < 0 || MoonPhase > 8)
             MoonPhase = 0;
+        if (Difficulty < 0 || Difficulty > 4)
+            Difficulty = 0;
         _mobFilter = Pattern.compile(mobFilter);
         _dimensionFilter = Pattern.compile(dimensionFilter);
         _biomeFilter = Pattern.compile(biomeFilter);
