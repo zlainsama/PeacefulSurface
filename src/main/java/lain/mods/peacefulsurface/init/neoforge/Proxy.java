@@ -13,7 +13,7 @@ import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.LogicalSidedProvider;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +28,7 @@ enum Proxy {
 
     Logger logger = LogManager.getLogger(NeoForgePeacefulSurface.class);
 
-    void handleCheckSpawn(MobSpawnEvent.FinalizeSpawn event) {
+    void handleCheckSpawn(FinalizeSpawnEvent event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(NeoForgeEntityObj.get(event.getEntity()), NeoForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
         event.setSpawnCancelled(true);
