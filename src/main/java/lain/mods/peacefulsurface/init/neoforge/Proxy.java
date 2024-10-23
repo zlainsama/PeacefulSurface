@@ -8,7 +8,7 @@ import lain.mods.peacefulsurface.impl.neoforge.NeoForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.LogicalSidedProvider;
@@ -29,7 +29,7 @@ enum Proxy {
     Logger logger = LogManager.getLogger(NeoForgePeacefulSurface.class);
 
     void handleCheckSpawn(FinalizeSpawnEvent event) {
-        if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(NeoForgeEntityObj.get(event.getEntity()), NeoForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
+        if (event.getSpawnType() != EntitySpawnReason.NATURAL || !PeaceAPI.filterEntity(NeoForgeEntityObj.get(event.getEntity()), NeoForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
         event.setSpawnCancelled(true);
         event.setCanceled(true);
