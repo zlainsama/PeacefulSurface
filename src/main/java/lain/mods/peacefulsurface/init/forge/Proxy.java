@@ -8,7 +8,7 @@ import lain.mods.peacefulsurface.impl.forge.ForgeWorldObj;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -29,7 +29,7 @@ enum Proxy {
     Logger logger = LogManager.getLogger(ForgePeacefulSurface.class);
 
     void handleCheckSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getSpawnType() != MobSpawnType.NATURAL || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
+        if (event.getSpawnReason() != EntitySpawnReason.NATURAL || !PeaceAPI.filterEntity(ForgeEntityObj.get(event.getEntity()), ForgeWorldObj.get(event.getLevel().getLevel()), Mth.floor(event.getX()), Mth.floor(event.getY()), Mth.floor(event.getZ())))
             return;
         event.setSpawnCancelled(true);
         event.setCanceled(true);

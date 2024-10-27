@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 @Mod("peacefulsurface")
 public class ForgePeacefulSurface {
 
-    public ForgePeacefulSurface() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+    public ForgePeacefulSurface(FMLJavaModLoadingContext context) {
+        context.getModEventBus().addListener(this::setup);
     }
 
     public static Logger getLogger() {
