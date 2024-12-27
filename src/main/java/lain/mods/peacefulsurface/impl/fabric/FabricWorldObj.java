@@ -1,9 +1,9 @@
 package lain.mods.peacefulsurface.impl.fabric;
 
-import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.api.ECLunarEventTags;
-import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
-import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
+import dev.corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
+import dev.corgitaco.enhancedcelestials.api.ECLunarEventTags;
+import dev.corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
+import dev.corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.fabric.FabricPeacefulSurface;
 import net.fabricmc.loader.api.FabricLoader;
@@ -94,7 +94,7 @@ public class FabricWorldObj implements IWorldObj {
             try {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
                         .map(EnhancedCelestialsContext::getLunarForecast)
-                        .map(LunarForecast::getCurrentEventRaw)
+                        .map(LunarForecast::currentLunarEvent)
                         .map(lunarEventHolder -> {
                             if (lunarEventHolder.isIn(ECLunarEventTags.BLOOD_MOON))
                                 return Boolean.TRUE;
