@@ -28,7 +28,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation fg.deobf("curse.maven:enhancedcelestials-438447:4393946")
+    implementation fg.deobf("curse.maven:enhancedcelestials-438447:6026649")
 }
 
 tasks.named('processResources', ProcessResources).configure {
