@@ -3,10 +3,10 @@ package lain.mods.peacefulsurface.impl.neoforge;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
-import corgitaco.enhancedcelestials.api.ECLunarEventTags;
-import corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
-import corgitaco.enhancedcelestials.lunarevent.LunarForecast;
+import dev.corgitaco.enhancedcelestials.EnhancedCelestialsWorldData;
+import dev.corgitaco.enhancedcelestials.api.ECLunarEventTags;
+import dev.corgitaco.enhancedcelestials.core.EnhancedCelestialsContext;
+import dev.corgitaco.enhancedcelestials.lunarevent.LunarForecast;
 import lain.mods.peacefulsurface.api.interfaces.IWorldObj;
 import lain.mods.peacefulsurface.init.neoforge.NeoForgePeacefulSurface;
 import net.minecraft.core.BlockPos;
@@ -122,7 +122,7 @@ public class NeoForgeWorldObj implements IWorldObj {
             try {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
                         .map(EnhancedCelestialsContext::getLunarForecast)
-                        .map(LunarForecast::getCurrentEventRaw)
+                        .map(LunarForecast::currentLunarEvent)
                         .map(lunarEventHolder -> {
                             if (lunarEventHolder.is(ECLunarEventTags.BLOOD_MOON))
                                 return Boolean.TRUE;

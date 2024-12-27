@@ -23,7 +23,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    implementation "curse.maven:enhancedcelestials-438447:4393946"
+    implementation "curse.maven:enhancedcelestials-438447:6026650"
 }
 
 tasks.withType(ProcessResources).configureEach {
