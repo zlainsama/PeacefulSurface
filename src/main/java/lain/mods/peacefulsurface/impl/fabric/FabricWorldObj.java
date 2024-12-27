@@ -94,7 +94,7 @@ public class FabricWorldObj implements IWorldObj {
             try {
                 return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
                         .map(EnhancedCelestialsContext::getLunarForecast)
-                        .map(LunarForecast::getCurrentEventRaw)
+                        .map(LunarForecast::currentLunarEvent)
                         .map(lunarEventHolder -> {
                             if (lunarEventHolder.isIn(ECLunarEventTags.BLOOD_MOON))
                                 return Boolean.TRUE;
