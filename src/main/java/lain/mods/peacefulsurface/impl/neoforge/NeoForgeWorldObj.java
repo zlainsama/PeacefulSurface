@@ -46,6 +46,7 @@ public class NeoForgeWorldObj implements IWorldObj {
 
     });
     private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!ModList.get().isLoaded("enhancedcelestials"));
+    private static final AtomicBoolean failedCompat_LunarName_EnhancedCelestials = new AtomicBoolean(!FabricLoader.getInstance().isModLoaded("enhancedcelestials"));
 
     WeakReference<ServerLevel> w;
     String name;
@@ -110,6 +111,32 @@ public class NeoForgeWorldObj implements IWorldObj {
     @Override
     public String getWorldName() {
         return name;
+    }
+
+    @Override
+    public String getLunarName() {
+        ServerLevel o;
+        if ((o = w.get()) == null)
+            return "";
+
+        if (!failedCompat_LunarName_EnhancedCelestials.get()) {
+            try {
+                return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
+                        .map(EnhancedCelestialsContext::getLunarForecast)
+                        .map(LunarForecast::currentLunarEvent)
+                        .map(lunarEventHolder -> {
+                            return lunarEventHolder.unwrapKey()
+                                    .map(ResourceKey::location)
+                                    .map(ResourceLocation::toString)
+                                    .orElse("");
+                        }).orElse("");
+            } catch (Throwable t) {
+                NeoForgePeacefulSurface.getLogger().error("error getting LunarName", t);
+                failedCompat_LunarName_EnhancedCelestials.set(true);
+            }
+        }
+
+        return "";
     }
 
     @Override
