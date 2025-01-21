@@ -50,7 +50,12 @@ public interface IWorldObj {
     String getWorldName();
 
     /**
-     * @return true if the world is currently in a event of BloodMoon. (if the BloodMoon mod is not present, this will always return false)
+     * @return the name of the current lunar event. (if no supported mod, this will always return an empty String)
+     */
+    String getLunarName();
+
+    /**
+     * @return true if the world is currently in a event of BloodMoon. (if no supported mod, this will always return false)
      */
     boolean isBloodMoon();
 
