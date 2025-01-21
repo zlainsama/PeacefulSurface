@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class FabricWorldObj implements IWorldObj {
 
     private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!FabricLoader.getInstance().isModLoaded("enhancedcelestials"));
+    private static final AtomicBoolean failedCompat_LunarName_EnhancedCelestials = new AtomicBoolean(!FabricLoader.getInstance().isModLoaded("enhancedcelestials"));
 
     private final WeakReference<ServerWorld> w;
     private final String name;
@@ -82,6 +83,32 @@ public class FabricWorldObj implements IWorldObj {
     @Override
     public String getWorldName() {
         return name;
+    }
+
+    @Override
+    public String getLunarName() {
+        ServerWorld o;
+        if ((o = w.get()) == null)
+            return "";
+
+        if (!failedCompat_LunarName_EnhancedCelestials.get()) {
+            try {
+                return Optional.ofNullable(((EnhancedCelestialsWorldData) o).getLunarContext())
+                        .map(EnhancedCelestialsContext::getLunarForecast)
+                        .map(LunarForecast::currentLunarEvent)
+                        .map(lunarEventHolder -> {
+                            return lunarEventHolder.getKey()
+                                    .map(RegistryKey::getValue)
+                                    .map(Identifier::toString)
+                                    .orElse("");
+                        }).orElse("");
+            } catch (Throwable t) {
+                FabricPeacefulSurface.LOGGER.error("error getting LunarName", t);
+                failedCompat_LunarName_EnhancedCelestials.set(true);
+            }
+        }
+
+        return "";
     }
 
     @Override
