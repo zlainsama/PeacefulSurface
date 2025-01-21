@@ -46,7 +46,7 @@ public class NeoForgeWorldObj implements IWorldObj {
 
     });
     private static final AtomicBoolean failedCompat_BloodMoon_EnhancedCelestials = new AtomicBoolean(!ModList.get().isLoaded("enhancedcelestials"));
-    private static final AtomicBoolean failedCompat_LunarName_EnhancedCelestials = new AtomicBoolean(!FabricLoader.getInstance().isModLoaded("enhancedcelestials"));
+    private static final AtomicBoolean failedCompat_LunarName_EnhancedCelestials = new AtomicBoolean(!ModList.get().isLoaded("enhancedcelestials"));
 
     WeakReference<ServerLevel> w;
     String name;
