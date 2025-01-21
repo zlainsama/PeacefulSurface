@@ -28,6 +28,7 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean UseMobFilter;
     public boolean UseDimensionFilter;
     public boolean UseBiomeFilter;
+    public boolean UseLunarNameFilter;
     public boolean Checking_LightLevel;
     public boolean Checking_Altitude;
     public boolean Checking_BlockLight;
@@ -40,6 +41,7 @@ public class JsonRule implements IEntitySpawnFilter {
     public boolean InvertedMobFilter;
     public boolean InvertedDimensionFilter;
     public boolean InvertedBiomeFilter;
+    public boolean InvertedLunarNameFilter;
     public boolean InvertedLightLevelChecking;
     public boolean InvertedAltitudeChecking;
     public boolean InvertedBlockLightChecking;
@@ -47,6 +49,7 @@ public class JsonRule implements IEntitySpawnFilter {
     public String mobFilter = "";
     public String dimensionFilter = "";
     public String biomeFilter = "";
+    public String lunarNameFilter = "";
     public int LightLevel;
     public int Altitude;
     public int BlockLight;
@@ -64,6 +67,7 @@ public class JsonRule implements IEntitySpawnFilter {
     private transient Pattern _mobFilter;
     private transient Pattern _dimensionFilter;
     private transient Pattern _biomeFilter;
+    private transient Pattern _lunarNameFilter;
 
     public static Collection<JsonRule> fromDirectory(File dir) throws IOException {
         return fromDirectory(dir, ignored -> true);
@@ -154,6 +158,17 @@ public class JsonRule implements IEntitySpawnFilter {
                     return false;
             }
         }
+        if (UseLunarNameFilter) {
+            if (InvertedLunarNameFilter) {
+                String lunarName = world.getLunarName();
+                if (!_lunarNameFilter.matcher(lunarName).lookingAt())
+                    return false;
+            } else {
+                String lunarName = world.getLunarName();
+                if (_lunarNameFilter.matcher(lunarName).lookingAt())
+                    return false;
+            }
+        }
         if (Checking_LightLevel) {
             int n = world.getLightLevel(x, y, z);
             if (InvertedLightLevelChecking) {
@@ -218,6 +233,7 @@ public class JsonRule implements IEntitySpawnFilter {
         _mobFilter = Pattern.compile(mobFilter);
         _dimensionFilter = Pattern.compile(dimensionFilter);
         _biomeFilter = Pattern.compile(biomeFilter);
+        _lunarNameFilter = Pattern.compile(lunarNameFilter);
         valid = true;
     }
 
