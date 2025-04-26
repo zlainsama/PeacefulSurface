@@ -9,11 +9,10 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.LogicalSidedProvider;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +36,7 @@ enum Proxy {
 
     void handleRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("reloadpeace").requires(source -> source.hasPermission(3)).executes(context -> {
-            LogicalSidedProvider.WORKQUEUE.get(LogicalSide.SERVER).execute(() -> {
+            ServerLifecycleHooks.getCurrentServer().execute(() -> {
                 reloadRules();
                 context.getSource().sendSuccess(() -> Component.translatable("commands.reloadpeace.done"), true);
             });

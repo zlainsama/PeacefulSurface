@@ -176,7 +176,7 @@ public class NeoForgeWorldObj implements IWorldObj {
         ServerLevel o;
         if ((o = w.get()) == null)
             return false;
-        return o.isDay();
+        return o.isBrightOutside();
     }
 
     @Override
